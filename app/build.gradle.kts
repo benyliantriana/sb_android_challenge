@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.preview)
-    implementation(libs.datastore)
+    implementation(libs.datastore.preferences)
     implementation(libs.gson.converter)
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
