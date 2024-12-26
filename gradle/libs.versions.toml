@@ -1,23 +1,21 @@
 [versions]
 activity-compose = "1.9.3"
 agp = "8.7.3"
-appcompat = "1.7.0"
 compose = "1.7.6"
 core-ktx = "1.15.0"
 datastore = "1.1.1"
 espresso-core = "3.6.1"
 hilt = "2.52"
+hilt-navigation-compose = "1.2.0"
 junit = "4.13.2"
 junit-version = "1.2.1"
 kotlin = "2.0.20"
 kotlinx-serialization-json = "1.7.3"
 lifecycle = "2.8.7"
 material3 = "1.3.1"
-okhttp = "4.12.0"
 protobuf-kotlin-lite = "3.25.2"
 protobuff = "0.9.4"
 retrofit = "2.11.0"
-retrofit-jakewharton-converter = "1.0.0"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -35,13 +33,12 @@ datastore-preferences = { group = "androidx.datastore", name = "datastore-prefer
 gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf-kotlin-lite" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-jakewharton-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-jakewharton-converter" }
 
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

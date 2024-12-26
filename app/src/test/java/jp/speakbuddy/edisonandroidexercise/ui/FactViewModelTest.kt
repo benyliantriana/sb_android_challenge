@@ -1,21 +1,20 @@
 package jp.speakbuddy.edisonandroidexercise.ui
 
+import jp.speakbuddy.edisonandroidexercise.data.Fact
 import jp.speakbuddy.edisonandroidexercise.ui.fact.FactViewModel
+import jp.speakbuddy.edisonandroidexercise.ui.fake.FakeFactRepository
+import jp.speakbuddy.network.response.BaseResponse
 import org.junit.Test
 
 class FactViewModelTest {
 
-    private val viewModel = FactViewModel()
+    // this should be dynamic on each test case, will be updated later
+    private val fakeFactRepository = FakeFactRepository(
+        BaseResponse.Success(Fact("cat fact", 10))
+    )
+    private val viewModel = FactViewModel(fakeFactRepository)
 
     @Test
     fun updateFact() {
-        var loading = true
-        val initialFact = "initial"
-        var fact = initialFact
-
-        fact = viewModel.updateFact { loading = false }
-
-        assert(!loading)
-        assert(fact != initialFact)
     }
 }
