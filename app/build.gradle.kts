@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.protobuf)
     alias(libs.plugins.serialization)
     kotlin("kapt")
 }
@@ -53,25 +52,6 @@ android {
         }
     }
 }
-
-// Setup protobuf configuration, generating lite Java and Kotlin classes
-//protobuf {
-//    protoc {
-//        artifact = "com.google.protobuf:protoc:22.0"
-//    }
-//    generateProtoTasks {
-//        all().forEach { task ->
-//            task.builtins {
-//                val java by registering {
-//                    option("lite")
-//                }
-//                val kotlin by registering {
-//                    option("lite")
-//                }
-//            }
-//        }
-//    }
-//}
 
 dependencies {
     implementation(libs.androidx.core.ktx)

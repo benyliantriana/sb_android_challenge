@@ -26,6 +26,7 @@ class ModuleInjection {
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 }
 
+// better move it to lib_base?? still have no idea what will be in the lib_base
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IODispatcher
