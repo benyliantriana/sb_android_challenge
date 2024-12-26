@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.preview)
     implementation(libs.datastore)
-    implementation(libs.datastore.preferences)
     implementation(libs.gson.converter)
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
@@ -68,6 +67,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.material3)
     implementation(libs.protobuf.kotlin.lite)
+
     implementation(project(":libs:lib_network"))
     implementation(project(":libs:lib_datastore"))
 
