@@ -1,6 +1,7 @@
 [versions]
 activity-compose = "1.9.3"
 agp = "8.7.3"
+appcompat = "1.7.0"
 compose = "1.7.6"
 core-ktx = "1.15.0"
 datastore = "1.1.1"
@@ -17,8 +18,11 @@ protobuf-kotlin-lite = "3.25.2"
 protobuff = "0.9.4"
 retrofit = "2.11.0"
 retrofit-jakewharton-converter = "1.0.0"
+material = "1.12.0"
 
 [libraries]
+#need to make sure this app compat
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
@@ -41,6 +45,11 @@ protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-jakewharton-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-jakewharton-converter" }
+
+plugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
