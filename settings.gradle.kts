@@ -16,6 +16,4 @@ rootProject.name = "edison_android_exercise"
 
 include(":app")
 
-include(":libs:network")
-
 includeBuild("build-src")

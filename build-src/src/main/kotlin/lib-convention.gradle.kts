@@ -5,6 +5,7 @@ import jp.speakbuddy.common.libs
 plugins {
     `android-library`
     `kotlin-android`
+    kotlin("kapt")
 }
 
 android {
@@ -36,6 +37,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.jakewharton.converter)
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 }
