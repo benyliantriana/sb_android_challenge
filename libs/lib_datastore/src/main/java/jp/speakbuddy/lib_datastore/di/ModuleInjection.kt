@@ -11,6 +11,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jp.speakbuddy.lib_datastore.FactPreference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -25,8 +28,10 @@ class ModuleInjection {
     fun provideProtoDataStore(
         @ApplicationContext context: Context,
     ): DataStore<FactPreference> = DataStoreFactory.create(
-        serializer = FactSerializer
-    ) {
-        context.dataStoreFile(FACT_PREFERENCE_NAME)
-    }
+        serializer = FactSerializer,
+        produceFile = {
+            context.dataStoreFile(FACT_PREFERENCE_NAME)
+        },
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+    )
 }
