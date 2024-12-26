@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface FactApi {
     @GET("fact")
-    suspend fun getFact(): Call<Fact>
+    fun getFact(): Call<Fact>
 }

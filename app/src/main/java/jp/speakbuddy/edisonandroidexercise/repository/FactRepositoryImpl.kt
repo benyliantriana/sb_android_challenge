@@ -31,7 +31,9 @@ class FactRepositoryImpl(
     }.catch { cause ->
         when (cause) {
             is IOException -> emit(BaseResponse.Failed(502, "No Connection"))
-            else -> emit(BaseResponse.Failed(502, "Bad Gateway"))
+            else -> {
+                emit(BaseResponse.Failed(503, cause.message.toString()))
+            }
         }
     }
 }
