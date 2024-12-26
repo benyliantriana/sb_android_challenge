@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "edison_android_exercise"
 
 include(":app")
-include(":libs:network")
+include(":libs:lib_network")
 includeBuild("build-src")
