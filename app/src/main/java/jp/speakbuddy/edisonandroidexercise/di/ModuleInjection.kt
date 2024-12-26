@@ -9,6 +9,7 @@ import jp.speakbuddy.edisonandroidexercise.repository.FactRepositoryImpl
 import jp.speakbuddy.network.service.ApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -20,7 +21,12 @@ class ModuleInjection {
         apiService: ApiService,
     ): FactRepository = FactRepositoryImpl(apiService)
 
+    @IODispatcher
     @Provides
-    @Singleton
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 }
+
+// better move it to lib_base?? still have no idea what will be in the lib_base
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IODispatcher
