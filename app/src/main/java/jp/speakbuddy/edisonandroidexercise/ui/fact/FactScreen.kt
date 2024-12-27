@@ -21,7 +21,7 @@ import jp.speakbuddy.edisonandroidexercise.ui.theme.EdisonAndroidExerciseTheme
 fun FactScreen(
     viewModel: FactViewModel = hiltViewModel<FactViewModel>(),
 ) {
-    val fact = viewModel.fact.collectAsStateWithLifecycle().value.orEmpty()
+    val fact = viewModel.fact.collectAsStateWithLifecycle().value
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,7 +39,7 @@ fun FactScreen(
         )
 
         Text(
-            text = fact,
+            text = fact?.fact.orEmpty(),
             style = MaterialTheme.typography.bodyLarge
         )
 

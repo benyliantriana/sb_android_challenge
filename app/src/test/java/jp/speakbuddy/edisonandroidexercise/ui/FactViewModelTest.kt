@@ -16,7 +16,6 @@ class FactViewModelTest {
     )
     private val viewModel = FactViewModel(
         fakeFactRepository,
-        testDataStore,
         ioDispatcher = Dispatchers.IO,
     )
 
