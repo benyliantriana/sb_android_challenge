@@ -68,8 +68,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.protobuf.kotlin.lite)
 
-    implementation(project(":libs:lib_network"))
-    implementation(project(":libs:lib_datastore"))
+    implementation(project(":features:feature_fact"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

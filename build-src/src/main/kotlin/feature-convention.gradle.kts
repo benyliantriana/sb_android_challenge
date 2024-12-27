@@ -5,6 +5,9 @@ import jp.speakbuddy.common.libs
 plugins {
     `android-library`
     `kotlin-android`
+    `kotlin-kapt`
+    `kotlin-parcelize`
+    `kotlinx-serialization`
     kotlin("kapt")
 }
 
@@ -31,6 +34,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.7.5"
+    }
     kotlinOptions {
         jvmTarget = "17"
     }
@@ -50,6 +59,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.material3)
     implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(libs.plugin.android)
     implementation(libs.plugin.kotlin)
+    implementation(libs.plugin.kotlin.serialization)
 
     /**
      * this line contains hack from: https://github.com/gradle/gradle/issues/15383

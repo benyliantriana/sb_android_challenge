@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.feature_fact.fact.FactScreen
 import dagger.hilt.android.AndroidEntryPoint
-import jp.speakbuddy.edisonandroidexercise.ui.fact.FactScreen
-import jp.speakbuddy.edisonandroidexercise.ui.fact.FactViewModel
-import jp.speakbuddy.edisonandroidexercise.ui.theme.EdisonAndroidExerciseTheme
+import jp.speakbuddy.edisonandroidexercise.theme.EdisonAndroidExerciseTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
