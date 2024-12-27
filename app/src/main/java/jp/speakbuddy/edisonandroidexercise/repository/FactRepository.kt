@@ -5,5 +5,6 @@ import jp.speakbuddy.network.response.BaseResponse
 import kotlinx.coroutines.flow.Flow
 
 interface FactRepository {
-    suspend fun getFact(): Flow<BaseResponse<Fact>>
+    suspend fun getSavedFact(): Flow<BaseResponse<Fact>>
+    suspend fun updateFact(): Flow<BaseResponse<Fact>>
 }

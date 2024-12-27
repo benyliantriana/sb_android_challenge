@@ -1,32 +1,38 @@
 package jp.speakbuddy.edisonandroidexercise.repository
 
-import jp.speakbuddy.edisonandroidexercise.api.FactApi
 import jp.speakbuddy.edisonandroidexercise.data.Fact
+import jp.speakbuddy.edisonandroidexercise.datasource.local.FactLocalDataSource
+import jp.speakbuddy.edisonandroidexercise.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.network.response.BaseResponse
-import jp.speakbuddy.network.service.ApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import retrofit2.awaitResponse
 import java.io.IOException
+import javax.inject.Inject
 
-class FactRepositoryImpl(
-    private val apiService: ApiService,
+class FactRepositoryImpl @Inject constructor(
+    private val factLocalDataSource: FactLocalDataSource,
+    private val factRemoteDataSource: FactRemoteDataSource,
 ) : FactRepository {
-    override suspend fun getFact(): Flow<BaseResponse<Fact>> = flow {
-        val result = apiService.service()
-            .create(FactApi::class.java)
-            .getFact()
-            .awaitResponse()
-        if (result.isSuccessful) {
-            result.body()?.let {
-                emit(BaseResponse.Success(it))
-            }
-            if (result.body()?.fact.isNullOrEmpty()) {
-                emit(BaseResponse.Failed(result.code(), "Fact not found!"))
-            }
+    override suspend fun getSavedFact(): Flow<BaseResponse<Fact>> = flow {
+        emit(getStoredFact())
+    }
+
+    override suspend fun updateFact(): Flow<BaseResponse<Fact>> = flow {
+        val localFact = getStoredFact()
+        var fact = Fact("", 0)
+        if (localFact is BaseResponse.Success) {
+            fact = localFact.data
+        }
+
+        val remoteFact = getRemoteFact()
+        if (remoteFact is BaseResponse.Success) {
+            storeFact(remoteFact.data)
+            emit(remoteFact)
         } else {
-            emit(BaseResponse.Failed(result.code(), result.message()))
+            if (fact.fact.isEmpty()) {
+                emit(remoteFact)
+            }
         }
     }.catch { cause ->
         when (cause) {
@@ -35,5 +41,17 @@ class FactRepositoryImpl(
                 emit(BaseResponse.Failed(503, cause.message.toString()))
             }
         }
+    }
+
+    private suspend fun getRemoteFact(): BaseResponse<Fact> {
+        return factRemoteDataSource.getRemoteFact()
+    }
+
+    private suspend fun getStoredFact(): BaseResponse<Fact> {
+        return factLocalDataSource.getLocalFact()
+    }
+
+    private suspend fun storeFact(fact: Fact) {
+        factLocalDataSource.saveFactToDataStore(fact)
     }
 }
