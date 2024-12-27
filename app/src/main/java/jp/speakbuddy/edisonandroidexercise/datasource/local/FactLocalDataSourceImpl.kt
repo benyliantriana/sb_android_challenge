@@ -5,8 +5,9 @@ import jp.speakbuddy.edisonandroidexercise.data.Fact
 import jp.speakbuddy.edisonandroidexercise.di.IODispatcher
 import jp.speakbuddy.lib_datastore.FactPreference
 import jp.speakbuddy.lib_datastore.copy
+import jp.speakbuddy.network.response.BaseResponse
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
@@ -15,13 +16,18 @@ class FactLocalDataSourceImpl @Inject constructor(
     private val factDataStore: DataStore<FactPreference>,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : FactLocalDataSource {
-    override suspend fun getLocalFact(): Fact? = withContext(ioDispatcher) {
-        var result: Fact? = null
+    override suspend fun getLocalFact(): BaseResponse<Fact> = withContext(ioDispatcher) {
+        var result: BaseResponse<Fact>
         try {
-            factDataStore.data.firstOrNull()?.let {
-                result = Fact(it.fact, it.length)
-            }
+            val savedFact = factDataStore.data.first()
+            result = BaseResponse.Success(
+                Fact(savedFact.fact, savedFact.length)
+            )
         } catch (ioException: IOException) {
+            result = BaseResponse.Failed(
+                code = 404,
+                message = ioException.message.toString()
+            )
             println(ioException.message)
         }
 

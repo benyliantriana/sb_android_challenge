@@ -7,6 +7,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jp.speakbuddy.edisonandroidexercise.datasource.local.FactLocalDataSource
 import jp.speakbuddy.edisonandroidexercise.datasource.local.FactLocalDataSourceImpl
+import jp.speakbuddy.edisonandroidexercise.datasource.remote.FactRemoteDataSource
+import jp.speakbuddy.edisonandroidexercise.datasource.remote.FactRemoteDataSourceImpl
 import jp.speakbuddy.edisonandroidexercise.repository.FactRepository
 import jp.speakbuddy.edisonandroidexercise.repository.FactRepositoryImpl
 import jp.speakbuddy.lib_datastore.FactPreference
@@ -22,9 +24,9 @@ class ModuleInjection {
     @Provides
     @Singleton
     fun provideFactRepository(
-        apiService: ApiService,
         factLocalDataSource: FactLocalDataSource,
-    ): FactRepository = FactRepositoryImpl(apiService, factLocalDataSource)
+        factRemoteDataSource: FactRemoteDataSource,
+    ): FactRepository = FactRepositoryImpl(factLocalDataSource, factRemoteDataSource)
 
     @Provides
     @Singleton
@@ -32,6 +34,13 @@ class ModuleInjection {
         factDataStore: DataStore<FactPreference>,
         @IODispatcher ioDispatcher: CoroutineDispatcher,
     ): FactLocalDataSource = FactLocalDataSourceImpl(factDataStore, ioDispatcher)
+
+    @Provides
+    @Singleton
+    fun provideFactRemoteDataSource(
+        apiService: ApiService,
+        @IODispatcher ioDispatcher: CoroutineDispatcher,
+    ): FactRemoteDataSource = FactRemoteDataSourceImpl(apiService, ioDispatcher)
 
     @IODispatcher
     @Provides

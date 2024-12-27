@@ -1,4 +1,8 @@
 package jp.speakbuddy.edisonandroidexercise.datasource.remote
 
-class FactRemoteDataSource {
+import jp.speakbuddy.edisonandroidexercise.data.Fact
+import jp.speakbuddy.network.response.BaseResponse
+
+interface FactRemoteDataSource {
+    suspend fun getRemoteFact(): BaseResponse<Fact>
 }

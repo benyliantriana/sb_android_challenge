@@ -9,5 +9,7 @@ import kotlinx.coroutines.flow.flowOf
 class FakeFactRepository(
     private val factResponse: BaseResponse<Fact>
 ): FactRepository {
-    override suspend fun getFact(): Flow<BaseResponse<Fact>> = flowOf(factResponse)
+    override suspend fun getSavedFact(): Flow<BaseResponse<Fact>> = flowOf(factResponse)
+
+    override suspend fun updateFact(): Flow<BaseResponse<Fact>> = flowOf(factResponse)
 }

@@ -23,12 +23,31 @@ class FactViewModel @Inject constructor(
     val fact: StateFlow<Fact?> get() = _fact
 
     init {
-        updateFact() // should be get saved fact
+        getSavedFact()
+    }
+
+    private fun getSavedFact() {
+        viewModelScope.launch(ioDispatcher) {
+            factRepository.getSavedFact().collect { result ->
+                when (result) {
+                    is BaseResponse.Success -> {
+                        _fact.value = result.data
+                    }
+
+                    is BaseResponse.Failed -> {
+                        _fact.value = Fact(
+                            fact = result.message,
+                            length = -1
+                        )
+                    }
+                }
+            }
+        }
     }
 
     fun updateFact() {
         viewModelScope.launch(ioDispatcher) {
-            factRepository.getFact().collectLatest { result ->
+            factRepository.updateFact().collectLatest { result ->
                 when (result) {
                     is BaseResponse.Success -> {
                         _fact.value = result.data
