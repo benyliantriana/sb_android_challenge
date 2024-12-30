@@ -1,6 +1,6 @@
 plugins {
     id("jp.speakbuddy.feature-convention")
-    alias(libs.plugins.compose.compiler) // need to move this on convention, but how?
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":libs:lib_base"))
     implementation(project(":libs:lib_network"))
     implementation(project(":libs:lib_datastore"))
 }

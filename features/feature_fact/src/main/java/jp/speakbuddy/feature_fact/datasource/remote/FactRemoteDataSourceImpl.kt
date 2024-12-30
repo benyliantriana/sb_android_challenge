@@ -2,7 +2,7 @@ package jp.speakbuddy.feature_fact.datasource.remote
 
 import jp.speakbuddy.feature_fact.api.FactApi
 import jp.speakbuddy.feature_fact.data.Fact
-import jp.speakbuddy.feature_fact.di.IODispatcher
+import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_network.response.BaseResponse
 import jp.speakbuddy.lib_network.service.ApiService
 import kotlinx.coroutines.CoroutineDispatcher
