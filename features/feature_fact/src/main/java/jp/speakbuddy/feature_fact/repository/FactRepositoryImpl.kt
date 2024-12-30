@@ -15,25 +15,17 @@ class FactRepositoryImpl @Inject constructor(
     private val factRemoteDataSource: FactRemoteDataSource,
 ) : FactRepository {
     override suspend fun getSavedFact(): Flow<BaseResponse<Fact>> = flow {
+        emit(BaseResponse.Loading)
         emit(getStoredFact())
     }
 
     override suspend fun updateFact(): Flow<BaseResponse<Fact>> = flow {
-        val localFact = getStoredFact()
-        var fact = Fact("", 0)
-        if (localFact is BaseResponse.Success) {
-            fact = localFact.data
-        }
-
+        emit(BaseResponse.Loading)
         val remoteFact = getRemoteFact()
         if (remoteFact is BaseResponse.Success) {
             storeFact(remoteFact.data)
-            emit(remoteFact)
-        } else {
-            if (fact.fact.isEmpty()) {
-                emit(remoteFact)
-            }
         }
+        emit(remoteFact)
     }.catch { cause ->
         when (cause) {
             is IOException -> emit(BaseResponse.Failed(502, "No Connection"))

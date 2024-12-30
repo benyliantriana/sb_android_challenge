@@ -30,6 +30,13 @@ class FactViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             factRepository.getSavedFact().collect { result ->
                 when (result) {
+                    BaseResponse.Loading -> {
+                        _fact.value = Fact(
+                            fact = "Loading...",
+                            length = -1
+                        )
+                    }
+
                     is BaseResponse.Success -> {
                         _fact.value = result.data
                     }
@@ -49,6 +56,13 @@ class FactViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             factRepository.updateFact().collectLatest { result ->
                 when (result) {
+                    is BaseResponse.Loading -> {
+                        _fact.value = Fact(
+                            fact = "Loading...",
+                            length = -1
+                        )
+                    }
+
                     is BaseResponse.Success -> {
                         _fact.value = result.data
                     }

@@ -1,0 +1,4 @@
+<resources>
+    <string name="fact_title">Fact</string>
+    <string name="fact_update_fact">Update Fact</string>
+</resources>
