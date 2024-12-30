@@ -3,8 +3,8 @@ package jp.speakbuddy.feature_fact.datasource.remote
 import jp.speakbuddy.feature_fact.api.FactApi
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.di.IODispatcher
-import jp.speakbuddy.network.response.BaseResponse
-import jp.speakbuddy.network.service.ApiService
+import jp.speakbuddy.lib_network.response.BaseResponse
+import jp.speakbuddy.lib_network.service.ApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse

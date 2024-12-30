@@ -5,7 +5,7 @@ import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.di.IODispatcher
 import jp.speakbuddy.lib_datastore.FactPreference
 import jp.speakbuddy.lib_datastore.copy
-import jp.speakbuddy.network.response.BaseResponse
+import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

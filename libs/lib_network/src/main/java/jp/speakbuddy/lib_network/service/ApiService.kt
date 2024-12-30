@@ -1,4 +1,4 @@
-package jp.speakbuddy.network.service
+package jp.speakbuddy.lib_network.service
 
 import retrofit2.Retrofit
 

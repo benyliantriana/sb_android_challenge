@@ -1,6 +1,6 @@
-package jp.speakbuddy.network.service
+package jp.speakbuddy.lib_network.service
 
-import jp.speakbuddy.network.interceptor.ConnectivityInterceptor
+import jp.speakbuddy.lib_network.interceptor.ConnectivityInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
