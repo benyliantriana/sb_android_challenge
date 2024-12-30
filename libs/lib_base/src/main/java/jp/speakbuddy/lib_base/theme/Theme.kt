@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.theme
+package jp.speakbuddy.lib_base.theme
 
 import android.app.Activity
 import android.os.Build

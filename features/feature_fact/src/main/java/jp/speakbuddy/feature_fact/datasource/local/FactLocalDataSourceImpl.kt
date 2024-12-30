@@ -2,7 +2,7 @@ package jp.speakbuddy.feature_fact.datasource.local
 
 import androidx.datastore.core.DataStore
 import jp.speakbuddy.feature_fact.data.Fact
-import jp.speakbuddy.feature_fact.di.IODispatcher
+import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_datastore.FactPreference
 import jp.speakbuddy.lib_datastore.copy
 import jp.speakbuddy.lib_network.response.BaseResponse

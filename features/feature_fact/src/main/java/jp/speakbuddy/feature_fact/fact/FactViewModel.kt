@@ -2,10 +2,10 @@ package jp.speakbuddy.feature_fact.fact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jp.speakbuddy.feature_fact.di.IODispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.repository.FactRepository
+import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
