@@ -1,4 +1,4 @@
-package jp.speakbuddy.network.response
+package jp.speakbuddy.lib_network.response
 
 sealed class BaseResponse<T> {
     data class Success<T>(val data: T) : BaseResponse<T>()

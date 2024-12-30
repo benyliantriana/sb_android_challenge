@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import jp.speakbuddy.feature_fact.repository.FactRepository
 import jp.speakbuddy.feature_fact.repository.FactRepositoryImpl
 import jp.speakbuddy.lib_datastore.FactPreference
-import jp.speakbuddy.network.service.ApiService
+import jp.speakbuddy.lib_network.service.ApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Qualifier

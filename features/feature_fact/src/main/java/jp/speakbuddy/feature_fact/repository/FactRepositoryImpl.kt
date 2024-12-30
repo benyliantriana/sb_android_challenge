@@ -3,7 +3,7 @@ package jp.speakbuddy.feature_fact.repository
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
-import jp.speakbuddy.network.response.BaseResponse
+import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

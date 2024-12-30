@@ -2,7 +2,7 @@ package jp.speakbuddy.feature_fact.fake
 
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.repository.FactRepository
-import jp.speakbuddy.network.response.BaseResponse
+import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

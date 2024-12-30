@@ -6,7 +6,7 @@ import jp.speakbuddy.feature_fact.di.IODispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.repository.FactRepository
-import jp.speakbuddy.network.response.BaseResponse
+import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

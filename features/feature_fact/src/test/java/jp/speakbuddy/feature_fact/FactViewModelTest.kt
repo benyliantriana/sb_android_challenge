@@ -3,7 +3,7 @@ package jp.speakbuddy.feature_fact
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.feature_fact.fact.FactViewModel
-import jp.speakbuddy.network.response.BaseResponse
+import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.Dispatchers
 import org.junit.Test
 

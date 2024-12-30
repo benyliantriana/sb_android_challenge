@@ -1,4 +1,4 @@
-package jp.speakbuddy.network.interceptor
+package jp.speakbuddy.lib_network.interceptor
 
 import android.content.Context
 import android.net.ConnectivityManager

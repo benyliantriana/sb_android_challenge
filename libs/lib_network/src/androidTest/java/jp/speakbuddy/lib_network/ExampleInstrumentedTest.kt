@@ -1,4 +1,4 @@
-package jp.speakbuddy.network
+package jp.speakbuddy.lib_network
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

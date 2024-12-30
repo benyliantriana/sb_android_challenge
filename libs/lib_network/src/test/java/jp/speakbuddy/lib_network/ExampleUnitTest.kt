@@ -1,4 +1,4 @@
-package jp.speakbuddy.network
+package jp.speakbuddy.lib_network
 
 import org.junit.Test
 
