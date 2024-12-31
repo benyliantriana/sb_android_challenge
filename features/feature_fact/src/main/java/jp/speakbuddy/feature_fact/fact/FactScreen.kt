@@ -1,29 +1,32 @@
 package jp.speakbuddy.feature_fact.fact
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.AsyncImage
 import com.example.feature_fact.R
+import jp.speakbuddy.feature_fact.util.catImageUrl
 import jp.speakbuddy.lib_base.theme.EdisonAndroidExerciseTheme
+import jp.speakbuddy.lib_base.ui.components.DefaultButton
+import jp.speakbuddy.lib_base.ui.components.TextBody
+import jp.speakbuddy.lib_base.ui.components.TextBodyBold
+import jp.speakbuddy.lib_base.ui.components.TextTitle
 import jp.speakbuddy.lib_base.R as RBase
 
 @Composable
@@ -38,42 +41,38 @@ fun FactScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(colorResource(RBase.color.saffron))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.CenterVertically
-        )
     ) {
+        Spacer(Modifier.height(100.dp))
+        CatImage()
+        Spacer(Modifier.height(20.dp))
         FactTitle()
+        Spacer(Modifier.height(20.dp))
         FactMultipleCatDescription(hasMultipleCats)
         FactDescription(factUiState, currentFact)
+        Spacer(Modifier.height(10.dp))
         FactLengthDescription(factUiState, currentFact)
+        Spacer(Modifier.height(10.dp))
         FactUpdateButton(isUpdateButtonEnabled) {
             viewModel.updateFact()
         }
+        Spacer(Modifier.height(10.dp))
         FactErrorDescription(factUiState)
-        CatImage()
     }
 }
 
 @Composable
 private fun FactTitle() {
-    Text(
-        text = stringResource(R.string.fact_title),
-        style = MaterialTheme.typography.titleLarge
-    )
+    TextTitle(stringResource(R.string.fact_title))
 }
 
 @Composable
 private fun FactMultipleCatDescription(hasMultipleCats: Boolean) {
     if (hasMultipleCats) {
-        Text(
-            text = stringResource(R.string.fact_multiple_cats),
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-        )
+        TextBodyBold(stringResource(R.string.fact_multiple_cats))
+        Spacer(Modifier.height(20.dp))
     }
 }
 
@@ -83,10 +82,7 @@ private fun FactDescription(factUiState: FactUiState, currentFact: String) {
         is FactUiState.Success -> factUiState.factData.fact
         else -> currentFact
     }
-    Text(
-        text = factDescription,
-        style = MaterialTheme.typography.bodyLarge
-    )
+    TextBody(factDescription)
 }
 
 @Composable
@@ -96,12 +92,11 @@ private fun FactLengthDescription(factUiState: FactUiState, currentFact: String)
         else -> currentFact.length
     }
     if (length > 100) {
-        Text(
+        TextBodyBold(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             text = stringResource(R.string.fact_length, length),
-            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Right
         )
     }
@@ -112,16 +107,16 @@ private fun FactUpdateButton(
     isUpdateButtonEnabled: Boolean,
     onUpdateClick: () -> Unit,
 ) {
-    Button(
-        enabled = isUpdateButtonEnabled,
-        onClick = onUpdateClick
+    val updateButtonText = if (isUpdateButtonEnabled) {
+        stringResource(R.string.fact_update_fact)
+    } else {
+        stringResource(RBase.string.loading)
+    }
+    DefaultButton(
+        textButton = updateButtonText,
+        isEnabled = isUpdateButtonEnabled,
     ) {
-        val updateButtonText = if (isUpdateButtonEnabled) {
-            stringResource(R.string.fact_update_fact)
-        } else {
-            stringResource(RBase.string.loading)
-        }
-        Text(updateButtonText)
+        onUpdateClick()
     }
 }
 
@@ -132,19 +127,16 @@ private fun FactErrorDescription(factUiState: FactUiState) {
     } else ""
     Text(
         text = textButton,
-        color = Color.Red,
+        color = colorResource(RBase.color.lightred),
         style = MaterialTheme.typography.bodyLarge
     )
 }
 
 @Composable
 private fun CatImage() {
-    SubcomposeAsyncImage(
+    AsyncImage(
         modifier = Modifier.fillMaxWidth(),
-        model = "https://www.pngplay.com/wp-content/uploads/12/Sad-Cat-Meme-Transparent-Free-PNG.png",
-        loading = {
-            CircularProgressIndicator()
-        },
+        model = catImageUrl,
         contentDescription = null,
     )
 }
