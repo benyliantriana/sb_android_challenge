@@ -3,7 +3,6 @@ package jp.speakbuddy.feature_fact.fact
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.repository.FactRepository
 import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_network.response.BaseResponse
@@ -19,8 +18,15 @@ class FactViewModel @Inject constructor(
     private val factRepository: FactRepository,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-    private var _fact = MutableStateFlow<Fact?>(null)
-    val fact: StateFlow<Fact?> get() = _fact
+    private var _factUiState = MutableStateFlow<FactUiState>(FactUiState.Loading)
+    val factUiState: StateFlow<FactUiState> get() = _factUiState
+
+    // for loading state, because loading state don't have any data
+    private var _currentFact = MutableStateFlow("")
+    val currentFact: StateFlow<String> get() = _currentFact
+
+    private var _hasMultipleCats = MutableStateFlow(false)
+    val hasMultipleCats: StateFlow<Boolean> get() = _hasMultipleCats
 
     init {
         getSavedFact()
@@ -30,22 +36,18 @@ class FactViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             factRepository.getSavedFact().collect { result ->
                 when (result) {
-                    BaseResponse.Loading -> {
-                        _fact.value = Fact(
-                            fact = "Loading...",
-                            length = -1
-                        )
+                    is BaseResponse.Loading -> {
+                        _factUiState.value = FactUiState.Loading
                     }
 
                     is BaseResponse.Success -> {
-                        _fact.value = result.data
+                        _factUiState.value = FactUiState.Success(result.data)
+                        _currentFact.value = result.data.fact
+                        _hasMultipleCats.value = result.data.fact.contains("cats", true)
                     }
 
                     is BaseResponse.Failed -> {
-                        _fact.value = Fact(
-                            fact = result.message,
-                            length = -1
-                        )
+                        _factUiState.value = FactUiState.Failed(result.code, result.message)
                     }
                 }
             }
@@ -57,21 +59,17 @@ class FactViewModel @Inject constructor(
             factRepository.updateFact().collectLatest { result ->
                 when (result) {
                     is BaseResponse.Loading -> {
-                        _fact.value = Fact(
-                            fact = "Loading...",
-                            length = -1
-                        )
+                        _factUiState.value = FactUiState.Loading
                     }
 
                     is BaseResponse.Success -> {
-                        _fact.value = result.data
+                        _factUiState.value = FactUiState.Success(result.data)
+                        _currentFact.value = result.data.fact
+                        _hasMultipleCats.value = result.data.fact.contains("cats", true)
                     }
 
                     is BaseResponse.Failed -> {
-                        _fact.value = Fact(
-                            fact = result.message,
-                            length = -1
-                        )
+                        _factUiState.value = FactUiState.Failed(result.code, result.message)
                     }
                 }
             }
