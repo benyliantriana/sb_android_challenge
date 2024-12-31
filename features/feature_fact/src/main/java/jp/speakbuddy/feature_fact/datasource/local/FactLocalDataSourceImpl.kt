@@ -44,7 +44,8 @@ class FactLocalDataSourceImpl @Inject constructor(
                     }
                 }
             } catch (ioException: IOException) {
-                println("savingFact: " + ioException.message)
+                // need a better approach for this
+                throw ioException
             }
         }
     }
