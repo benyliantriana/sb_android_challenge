@@ -43,7 +43,7 @@ class FactViewModel @Inject constructor(
                     is BaseResponse.Success -> {
                         _factUiState.value = FactUiState.Success(result.data)
                         _currentFact.value = result.data.fact
-                        _hasMultipleCats.value = result.data.fact.contains("cats", true)
+                        _hasMultipleCats.value = hasMultipleCats(result.data.fact)
                     }
 
                     is BaseResponse.Failed -> {
@@ -65,7 +65,7 @@ class FactViewModel @Inject constructor(
                     is BaseResponse.Success -> {
                         _factUiState.value = FactUiState.Success(result.data)
                         _currentFact.value = result.data.fact
-                        _hasMultipleCats.value = result.data.fact.contains("cats", true)
+                        _hasMultipleCats.value = hasMultipleCats(result.data.fact)
                     }
 
                     is BaseResponse.Failed -> {
@@ -74,5 +74,9 @@ class FactViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun hasMultipleCats(fact: String): Boolean {
+        return fact.contains("cats", true)
     }
 }
