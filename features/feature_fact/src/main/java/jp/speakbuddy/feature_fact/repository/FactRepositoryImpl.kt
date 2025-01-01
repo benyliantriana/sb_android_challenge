@@ -3,11 +3,11 @@ package jp.speakbuddy.feature_fact.repository
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
+import jp.speakbuddy.lib_base.exception.remoteExceptionHandler
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import java.io.IOException
 import javax.inject.Inject
 
 class FactRepositoryImpl @Inject constructor(
@@ -26,13 +26,9 @@ class FactRepositoryImpl @Inject constructor(
             storeFact(remoteFact.data)
         }
         emit(remoteFact)
-    }.catch { cause ->
-        when (cause) {
-            is IOException -> emit(BaseResponse.Failed(502, "No Connection"))
-            else -> {
-                emit(BaseResponse.Failed(503, cause.message.toString()))
-            }
-        }
+    }.catch {
+        val exceptionData = remoteExceptionHandler(it)
+        emit(BaseResponse.Failed(exceptionData.code, exceptionData.message))
     }
 
     private suspend fun getRemoteFact(): BaseResponse<Fact> {

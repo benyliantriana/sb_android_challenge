@@ -48,28 +48,28 @@ fun FactScreen(
         Spacer(Modifier.height(100.dp))
         CatImage()
         Spacer(Modifier.height(20.dp))
-        FactTitle()
+        Title()
         Spacer(Modifier.height(20.dp))
-        FactMultipleCatDescription(hasMultipleCats)
-        FactDescription(factUiState, currentFact)
+        MultipleCat(hasMultipleCats)
+        Fact(factUiState, currentFact)
         Spacer(Modifier.height(10.dp))
-        FactLengthDescription(factUiState, currentFact)
+        FactLength(factUiState, currentFact)
         Spacer(Modifier.height(10.dp))
         FactUpdateButton(isUpdateButtonEnabled) {
             viewModel.updateFact()
         }
         Spacer(Modifier.height(10.dp))
-        FactErrorDescription(factUiState)
+        FactError(factUiState)
     }
 }
 
 @Composable
-private fun FactTitle() {
+private fun Title() {
     TextTitle(stringResource(R.string.fact_title))
 }
 
 @Composable
-private fun FactMultipleCatDescription(hasMultipleCats: Boolean) {
+private fun MultipleCat(hasMultipleCats: Boolean) {
     if (hasMultipleCats) {
         TextBodyBold(stringResource(R.string.fact_multiple_cats))
         Spacer(Modifier.height(20.dp))
@@ -77,7 +77,7 @@ private fun FactMultipleCatDescription(hasMultipleCats: Boolean) {
 }
 
 @Composable
-private fun FactDescription(factUiState: FactUiState, currentFact: String) {
+private fun Fact(factUiState: FactUiState, currentFact: String) {
     val factDescription = when (factUiState) {
         is FactUiState.Success -> factUiState.factData.fact
         else -> currentFact
@@ -86,7 +86,7 @@ private fun FactDescription(factUiState: FactUiState, currentFact: String) {
 }
 
 @Composable
-private fun FactLengthDescription(factUiState: FactUiState, currentFact: String) {
+private fun FactLength(factUiState: FactUiState, currentFact: String) {
     val length = when (factUiState) {
         is FactUiState.Success -> factUiState.factData.length
         else -> currentFact.length
@@ -121,13 +121,13 @@ private fun FactUpdateButton(
 }
 
 @Composable
-private fun FactErrorDescription(factUiState: FactUiState) {
+private fun FactError(factUiState: FactUiState) {
     val textButton = if (factUiState is FactUiState.Failed) {
         factUiState.message
     } else ""
     Text(
         text = textButton,
-        color = colorResource(RBase.color.lightred),
+        color = colorResource(RBase.color.light_red),
         style = MaterialTheme.typography.bodyLarge
     )
 }

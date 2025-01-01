@@ -16,7 +16,7 @@ fun DefaultButton(
 ) {
     Button(
         colors = ButtonDefaults.buttonColors().copy(
-            contentColor = colorResource(R.color.bluesky)
+            contentColor = colorResource(R.color.blue_sky)
         ),
         enabled = isEnabled,
         onClick = onClick,
