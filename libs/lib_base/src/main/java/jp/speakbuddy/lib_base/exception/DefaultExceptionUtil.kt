@@ -2,6 +2,11 @@ package jp.speakbuddy.lib_base.exception
 
 import java.io.IOException
 
+/**
+ * Use this class to handle the exception
+ * This class is still too simple, need improvement later
+ */
+
 // The IOException is exception from retrofit
 fun remoteExceptionHandler(throwable: Throwable): DefaultExceptionData {
     return when (throwable) {
