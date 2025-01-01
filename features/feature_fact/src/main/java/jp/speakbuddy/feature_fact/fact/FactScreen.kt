@@ -140,11 +140,3 @@ private fun CatImage() {
         contentDescription = null,
     )
 }
-
-@Preview
-@Composable
-private fun FactScreenPreview() {
-    EdisonAndroidExerciseTheme {
-        FactScreen()
-    }
-}
