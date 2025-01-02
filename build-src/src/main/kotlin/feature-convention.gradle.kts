@@ -43,6 +43,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    tasks.withType<Test> {
+        useJUnit()
+    }
 }
 
 dependencies {
@@ -66,7 +69,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.ui.test.junit)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
