@@ -44,7 +44,7 @@ android {
         jvmTarget = "17"
     }
     tasks.withType<Test> {
-        useJUnit()
+        useJUnitPlatform()
     }
 }
 
