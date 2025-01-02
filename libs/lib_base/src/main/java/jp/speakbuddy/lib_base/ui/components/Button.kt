@@ -5,6 +5,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Preview
 import jp.speakbuddy.lib_base.R
 
 @Composable
@@ -27,4 +28,12 @@ fun DefaultButton(
             text = textButton
         )
     }
+}
+
+@Preview
+@Composable
+private fun DefaultButtonPreview() {
+    DefaultButton(
+        textButton = "Default Button"
+    ) {}
 }
