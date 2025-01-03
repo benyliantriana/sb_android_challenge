@@ -88,19 +88,14 @@ private fun LandscapeView(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Spacer(Modifier.height(20.dp))
-            Title()
-            Spacer(Modifier.height(20.dp))
-            MultipleCat(hasMultipleCats)
-            Fact(factUiState, currentFact)
-            Spacer(Modifier.height(10.dp))
-            FactLength(factUiState, currentFact)
-            Spacer(Modifier.height(10.dp))
-            FactUpdateButton(isUpdateButtonEnabled) {
+            FactView(
+                factUiState = factUiState,
+                hasMultipleCats = hasMultipleCats,
+                currentFact = currentFact,
+                isUpdateButtonEnabled = isUpdateButtonEnabled,
+            ) {
                 updateFact()
             }
-            Spacer(Modifier.height(10.dp))
-            FactError(factUiState)
         }
     }
 }
@@ -122,20 +117,38 @@ private fun PortraitView(
     ) {
         Spacer(Modifier.height(100.dp))
         CatImage()
-        Spacer(Modifier.height(20.dp))
-        Title()
-        Spacer(Modifier.height(20.dp))
-        MultipleCat(hasMultipleCats)
-        Fact(factUiState, currentFact)
-        Spacer(Modifier.height(10.dp))
-        FactLength(factUiState, currentFact)
-        Spacer(Modifier.height(10.dp))
-        FactUpdateButton(isUpdateButtonEnabled) {
+        FactView(
+            factUiState = factUiState,
+            hasMultipleCats = hasMultipleCats,
+            currentFact = currentFact,
+            isUpdateButtonEnabled = isUpdateButtonEnabled,
+        ) {
             updateFact()
         }
-        Spacer(Modifier.height(10.dp))
-        FactError(factUiState)
     }
+}
+
+@Composable
+private fun FactView(
+    factUiState: FactUiState,
+    hasMultipleCats: Boolean,
+    currentFact: String,
+    isUpdateButtonEnabled: Boolean,
+    updateFact: () -> Unit,
+) {
+    Spacer(Modifier.height(20.dp))
+    Title()
+    Spacer(Modifier.height(20.dp))
+    MultipleCat(hasMultipleCats)
+    Fact(factUiState, currentFact)
+    Spacer(Modifier.height(10.dp))
+    FactLength(factUiState, currentFact)
+    Spacer(Modifier.height(10.dp))
+    FactUpdateButton(isUpdateButtonEnabled) {
+        updateFact()
+    }
+    Spacer(Modifier.height(10.dp))
+    FactError(factUiState)
 }
 
 @Composable
