@@ -1,28 +1,30 @@
 package jp.speakbuddy.feature_fact.fact
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.feature_fact.R
 import jp.speakbuddy.feature_fact.util.catImageUrl
-import jp.speakbuddy.lib_base.theme.EdisonAndroidExerciseTheme
 import jp.speakbuddy.lib_base.ui.components.DefaultButton
 import jp.speakbuddy.lib_base.ui.components.TextBody
 import jp.speakbuddy.lib_base.ui.components.TextBodyBold
@@ -37,7 +39,75 @@ fun FactScreen(
     val currentFact = viewModel.currentFact.collectAsStateWithLifecycle().value
     val hasMultipleCats = viewModel.hasMultipleCats.collectAsStateWithLifecycle().value
     val isUpdateButtonEnabled = factUiState !is FactUiState.Loading
+    val configuration = LocalConfiguration.current
 
+    when (configuration.orientation) {
+        Configuration.ORIENTATION_LANDSCAPE -> {
+            LandscapeView(
+                factUiState = factUiState,
+                hasMultipleCats = hasMultipleCats,
+                currentFact = currentFact,
+                isUpdateButtonEnabled = isUpdateButtonEnabled,
+            ) {
+                viewModel.updateFact()
+            }
+        }
+
+        else -> {
+            PortraitView(
+                factUiState = factUiState,
+                hasMultipleCats = hasMultipleCats,
+                currentFact = currentFact,
+                isUpdateButtonEnabled = isUpdateButtonEnabled,
+            ) {
+                viewModel.updateFact()
+            }
+        }
+    }
+}
+
+@Composable
+private fun LandscapeView(
+    factUiState: FactUiState,
+    hasMultipleCats: Boolean,
+    currentFact: String,
+    isUpdateButtonEnabled: Boolean,
+    updateFact: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(RBase.color.saffron))
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        CatImage(
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(Modifier.width(40.dp))
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            FactView(
+                factUiState = factUiState,
+                hasMultipleCats = hasMultipleCats,
+                currentFact = currentFact,
+                isUpdateButtonEnabled = isUpdateButtonEnabled,
+            ) {
+                updateFact()
+            }
+        }
+    }
+}
+
+@Composable
+private fun PortraitView(
+    factUiState: FactUiState,
+    hasMultipleCats: Boolean,
+    currentFact: String,
+    isUpdateButtonEnabled: Boolean,
+    updateFact: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,20 +117,38 @@ fun FactScreen(
     ) {
         Spacer(Modifier.height(100.dp))
         CatImage()
-        Spacer(Modifier.height(20.dp))
-        Title()
-        Spacer(Modifier.height(20.dp))
-        MultipleCat(hasMultipleCats)
-        Fact(factUiState, currentFact)
-        Spacer(Modifier.height(10.dp))
-        FactLength(factUiState, currentFact)
-        Spacer(Modifier.height(10.dp))
-        FactUpdateButton(isUpdateButtonEnabled) {
-            viewModel.updateFact()
+        FactView(
+            factUiState = factUiState,
+            hasMultipleCats = hasMultipleCats,
+            currentFact = currentFact,
+            isUpdateButtonEnabled = isUpdateButtonEnabled,
+        ) {
+            updateFact()
         }
-        Spacer(Modifier.height(10.dp))
-        FactError(factUiState)
     }
+}
+
+@Composable
+private fun FactView(
+    factUiState: FactUiState,
+    hasMultipleCats: Boolean,
+    currentFact: String,
+    isUpdateButtonEnabled: Boolean,
+    updateFact: () -> Unit,
+) {
+    Spacer(Modifier.height(20.dp))
+    Title()
+    Spacer(Modifier.height(20.dp))
+    MultipleCat(hasMultipleCats)
+    Fact(factUiState, currentFact)
+    Spacer(Modifier.height(10.dp))
+    FactLength(factUiState, currentFact)
+    Spacer(Modifier.height(10.dp))
+    FactUpdateButton(isUpdateButtonEnabled) {
+        updateFact()
+    }
+    Spacer(Modifier.height(10.dp))
+    FactError(factUiState)
 }
 
 @Composable
@@ -133,9 +221,11 @@ private fun FactError(factUiState: FactUiState) {
 }
 
 @Composable
-private fun CatImage() {
+private fun CatImage(
+    modifier: Modifier = Modifier,
+) {
     AsyncImage(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         model = catImageUrl,
         contentDescription = null,
     )
