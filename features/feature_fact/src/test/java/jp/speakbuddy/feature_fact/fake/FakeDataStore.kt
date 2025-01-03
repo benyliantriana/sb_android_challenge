@@ -9,6 +9,7 @@ import java.io.File
 
 @TempDir
 @JvmField
+// this prevent data store to make fact_preference.pb in the project
 val tempFolder: File = File(System.getProperty("java.io.tmpdir")!!)
 
 
