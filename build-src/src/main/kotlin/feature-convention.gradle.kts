@@ -66,12 +66,13 @@ dependencies {
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.kotlinx.serialization.json)
 
-    testImplementation(libs.junit)
+    implementation(libs.junit)
+    implementation(libs.kotlin.coroutine.test)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }
 
 kapt {

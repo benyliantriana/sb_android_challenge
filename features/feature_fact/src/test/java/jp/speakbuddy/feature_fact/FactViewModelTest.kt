@@ -1,11 +1,12 @@
 package jp.speakbuddy.feature_fact
 
 import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.fact.FactUiState
 import jp.speakbuddy.feature_fact.fact.FactViewModel
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -15,17 +16,146 @@ class FactViewModelTest {
     @RegisterExtension
     val coroutineTest = CoroutineTestExtension(true)
 
-    // this should be dynamic on each test case, will be updated later
-    private val fakeFactRepository = FakeFactRepository(
-        BaseResponse.Success(Fact("cat fact", 10))
-    )
-    private val viewModel = FactViewModel(
-        fakeFactRepository,
-        ioDispatcher = Dispatchers.IO,
+    private fun getViewModel(
+        expectedSavedFact: BaseResponse<Fact> = BaseResponse.Loading,
+        expectedUpdateFact: BaseResponse<Fact> = BaseResponse.Loading,
+    ) = FactViewModel(
+        FakeFactRepository(expectedSavedFact, expectedUpdateFact),
+        ioDispatcher = coroutineTest.dispatcher,
     )
 
     @Test
-    fun updateFact() = coroutineTest.runTest {
-        Assertions.assertEquals(4, 2 + 2)
+    fun `init loading state for getSavedFact`() = coroutineTest.runTest {
+        // given
+        val expected = FactUiState.Loading
+        val viewModel = getViewModel(
+            expectedSavedFact = BaseResponse.Loading
+        )
+        // when
+        val factUiState = viewModel.factUiState.first()
+        val currentFact = viewModel.currentFact.first()
+
+        // then
+        Assertions.assertEquals(expected, factUiState)
+        Assertions.assertEquals("", currentFact)
+    }
+
+    @Test
+    fun `success state for getSavedFact`() = coroutineTest.runTest {
+        // given
+        val fact = Fact("cat", 3)
+        val expected = FactUiState.Success(fact)
+        val viewModel = getViewModel(
+            expectedSavedFact = BaseResponse.Success(fact)
+        )
+        // when
+        val factUiState = viewModel.factUiState.first()
+        val currentFact = viewModel.currentFact.first()
+
+        // then
+        Assertions.assertEquals(expected, factUiState)
+        Assertions.assertEquals("cat", currentFact)
+    }
+
+    @Test
+    fun `failed state for getSavedFact`() = coroutineTest.runTest {
+        // given
+        val code = 404
+        val message = "Not found"
+        val expected = FactUiState.Failed(code, message)
+        val viewModel = getViewModel(
+            expectedSavedFact = BaseResponse.Failed(code, message)
+        )
+        // when
+        val factUiState = viewModel.factUiState.first()
+        val currentFact = viewModel.currentFact.first()
+
+        // then
+        Assertions.assertEquals(expected, factUiState)
+        Assertions.assertEquals("", currentFact)
+    }
+
+    @Test
+    fun `loading state for updateFact`() = coroutineTest.runTest {
+        // given
+        val expected = FactUiState.Loading
+        val viewModel = getViewModel(
+            expectedUpdateFact = BaseResponse.Loading
+        )
+        // when
+        viewModel.updateFact()
+        val factUiState = viewModel.factUiState.first()
+        val currentFact = viewModel.currentFact.first()
+
+        // then
+        Assertions.assertEquals(expected, factUiState)
+        Assertions.assertEquals("", currentFact)
+    }
+
+    @Test
+    fun `success state for updateFact`() = coroutineTest.runTest {
+        // given
+        val fact = Fact("cat", 3)
+        val expected = FactUiState.Success(fact)
+        val viewModel = getViewModel(
+            expectedUpdateFact = BaseResponse.Success(fact)
+        )
+        // when
+        viewModel.updateFact()
+        val factUiState = viewModel.factUiState.first()
+        val currentFact = viewModel.currentFact.first()
+
+        // then
+        Assertions.assertEquals(expected, factUiState)
+        Assertions.assertEquals("cat", currentFact)
+    }
+
+    @Test
+    fun `failed state for updateFact`() = coroutineTest.runTest {
+        // given
+        val code = 404
+        val message = "Not found"
+        val expected = FactUiState.Failed(code, message)
+        val viewModel = getViewModel(
+            expectedUpdateFact = BaseResponse.Failed(code, message)
+        )
+        // when
+        viewModel.updateFact()
+        val factUiState = viewModel.factUiState.first()
+        val currentFact = viewModel.currentFact.first()
+
+        // then
+        Assertions.assertEquals(expected, factUiState)
+        Assertions.assertEquals("", currentFact)
+    }
+
+    @Test
+    fun `check if fact has multiple cats`() = coroutineTest.runTest {
+        // given
+        val fact = Fact("cats is an animal", 10)
+        val viewModel = getViewModel(
+            expectedUpdateFact = BaseResponse.Success(fact)
+        )
+        // when
+        viewModel.updateFact()
+        val result = viewModel.hasMultipleCats.first()
+
+        // then
+        Assertions.assertEquals(true, result)
+    }
+
+    @Test
+    fun `check if fact doesn't has multiple cats`() = coroutineTest.runTest {
+        // given
+        val fact = Fact("cat is an animal", 10)
+        val viewModel = getViewModel(
+            expectedUpdateFact = BaseResponse.Success(fact)
+        )
+        // when
+        viewModel.updateFact()
+        val result = viewModel.hasMultipleCats.first()
+
+        // then
+        Assertions.assertEquals(false, result)
     }
 }

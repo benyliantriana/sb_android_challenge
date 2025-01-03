@@ -2,6 +2,7 @@ package jp.speakbuddy.lib_base.test
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -25,6 +26,7 @@ open class CoroutineTestExtension(unconfined: Boolean = false) : BeforeEachCallb
 
     override fun afterEach(context: ExtensionContext?) {
         Dispatchers.resetMain()
+        dispatcher.cancel()
     }
 
     fun runTest(testBody: suspend TestScope.() -> Unit) = scope.runTest(testBody = testBody)

@@ -9,7 +9,6 @@ import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,7 +55,7 @@ class FactViewModel @Inject constructor(
 
     fun updateFact() {
         viewModelScope.launch(ioDispatcher) {
-            factRepository.updateFact().collectLatest { result ->
+            factRepository.updateFact().collect { result ->
                 when (result) {
                     is BaseResponse.Loading -> {
                         _factUiState.value = FactUiState.Loading
