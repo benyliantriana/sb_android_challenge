@@ -9,9 +9,10 @@ import java.io.File
 
 @TempDir
 @JvmField
-var tempFolder: File = File("fact_preference.pb")
+val tempFolder: File = File(System.getProperty("java.io.tmpdir")!!)
+
 
 val testDataStore: DataStore<FactPreference> = DataStoreFactory.create(
     serializer = FactSerializer,
-    produceFile = { tempFolder }
+    produceFile = { File(tempFolder, "fact_preference.pb") }
 )
