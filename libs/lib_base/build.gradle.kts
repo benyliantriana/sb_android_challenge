@@ -16,4 +16,9 @@ dependencies {
     implementation(libs.material3)
 
     debugImplementation(libs.androidx.ui.tooling)
+
+    implementation(libs.junit)
+    implementation(libs.kotlin.coroutine.test)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
