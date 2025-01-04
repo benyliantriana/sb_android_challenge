@@ -5,13 +5,11 @@ import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.RegisterExtension
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class FactRemoteDataSourceTest {
     @JvmField
-    @RegisterExtension
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getRemoteLocalDataSource(
@@ -33,7 +31,7 @@ class FactRemoteDataSourceTest {
         val result = dataSource.getRemoteFact()
 
         // then
-        Assertions.assertEquals(expected, result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -50,6 +48,6 @@ class FactRemoteDataSourceTest {
         val result = dataSource.getRemoteFact()
 
         // then
-        Assertions.assertEquals(expected, result)
+        assertEquals(expected, result)
     }
 }

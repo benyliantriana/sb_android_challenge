@@ -8,13 +8,11 @@ import jp.speakbuddy.feature_fact.repository.FactRepositoryImpl
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.toList
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.RegisterExtension
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class FactRepositoryTest {
     @JvmField
-    @RegisterExtension
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getRepository(
@@ -41,7 +39,7 @@ class FactRepositoryTest {
         }
 
         // then
-        Assertions.assertEquals(expected, result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -56,8 +54,8 @@ class FactRepositoryTest {
         val result = repo.getSavedFact().toList()
 
         // then
-        Assertions.assertEquals(BaseResponse.Loading, result[0])
-        Assertions.assertEquals(expected, result[1])
+        assertEquals(BaseResponse.Loading, result[0])
+        assertEquals(expected, result[1])
     }
 
     @Test
@@ -73,8 +71,8 @@ class FactRepositoryTest {
         val result = repo.getSavedFact().toList()
 
         // then
-        Assertions.assertEquals(BaseResponse.Loading, result[0])
-        Assertions.assertEquals(expected, result[1])
+        assertEquals(BaseResponse.Loading, result[0])
+        assertEquals(expected, result[1])
     }
 
     @Test
@@ -91,7 +89,7 @@ class FactRepositoryTest {
         }
 
         // then
-        Assertions.assertEquals(expected, result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -106,8 +104,8 @@ class FactRepositoryTest {
         val result = repo.updateFact().toList()
 
         // then
-        Assertions.assertEquals(BaseResponse.Loading, result[0])
-        Assertions.assertEquals(expected, result[1])
+        assertEquals(BaseResponse.Loading, result[0])
+        assertEquals(expected, result[1])
     }
 
     @Test
@@ -123,7 +121,7 @@ class FactRepositoryTest {
         val result = repo.updateFact().toList()
 
         // then
-        Assertions.assertEquals(BaseResponse.Loading, result[0])
-        Assertions.assertEquals(expected, result[1])
+        assertEquals(BaseResponse.Loading, result[0])
+        assertEquals(expected, result[1])
     }
 }

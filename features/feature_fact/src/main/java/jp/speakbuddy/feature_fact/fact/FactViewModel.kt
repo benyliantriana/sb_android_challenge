@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FactViewModel @Inject constructor(
+open class FactViewModel @Inject constructor(
     private val factRepository: FactRepository,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
