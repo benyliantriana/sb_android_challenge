@@ -10,21 +10,22 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.extension.AfterEachCallback
-import org.junit.jupiter.api.extension.BeforeEachCallback
-import org.junit.jupiter.api.extension.ExtensionContext
+import org.junit.After
+import org.junit.Before
 
 @OptIn(ExperimentalCoroutinesApi::class)
-open class CoroutineTestExtension(unconfined: Boolean = false) : BeforeEachCallback,
-    AfterEachCallback {
+open class CoroutineTestExtension(unconfined: Boolean = false) {
     private val scope: TestScope = TestScope()
-    val dispatcher: TestDispatcher = if (unconfined) UnconfinedTestDispatcher() else StandardTestDispatcher()
+    val dispatcher: TestDispatcher =
+        if (unconfined) UnconfinedTestDispatcher() else StandardTestDispatcher()
 
-    override fun beforeEach(context: ExtensionContext?) {
+    @Before
+    fun beforeEach() {
         Dispatchers.setMain(dispatcher)
     }
 
-    override fun afterEach(context: ExtensionContext?) {
+    @After
+    fun afterEach() {
         Dispatchers.resetMain()
         dispatcher.cancel()
     }
