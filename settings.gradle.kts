@@ -18,6 +18,7 @@ include(":app")
 include(":libs:lib_base")
 include(":libs:lib_datastore")
 include(":libs:lib_network")
+include(":libs:lib_ui")
 include(":features:feature_fact")
 includeBuild("build-src")
 

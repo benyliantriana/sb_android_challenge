@@ -59,13 +59,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":libs:lib_base"))
-    implementation(project(":features:feature_fact"))
-
     implementation(libs.activity.compose)
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
     implementation(libs.material3)
+
+    implementation(project(":libs:lib_base"))
+    implementation(project(":libs:lib_ui"))
+    implementation(project(":features:feature_fact"))
 }
 
 kapt {

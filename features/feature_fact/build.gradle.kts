@@ -4,11 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.example.feature_fact"
+    namespace = "jp.speakbuddy.feature_fact"
 }
 
 dependencies {
-    implementation(project(":libs:lib_base"))
     implementation(project(":libs:lib_network"))
     implementation(project(":libs:lib_datastore"))
 }

@@ -1,6 +1,6 @@
 package jp.speakbuddy.feature_fact.fake
 
-import jp.speakbuddy.feature_fact.fact.FactViewModel
+import jp.speakbuddy.feature_fact.ui.fact.FactViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

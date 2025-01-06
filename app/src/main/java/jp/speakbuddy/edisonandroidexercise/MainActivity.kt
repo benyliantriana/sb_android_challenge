@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import jp.speakbuddy.feature_fact.fact.FactScreen
-import jp.speakbuddy.lib_base.theme.EdisonAndroidExerciseTheme
+import jp.speakbuddy.feature_fact.ui.fact.FactScreen
+import jp.speakbuddy.lib_ui.theme.EdisonAndroidExerciseTheme
 
 /**
  * Main Activity could be moved to feature lib and make the app more clean

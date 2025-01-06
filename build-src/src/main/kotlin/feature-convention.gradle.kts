@@ -62,11 +62,9 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle)
-    implementation(libs.activity.compose)
     implementation(libs.coil)
     implementation(libs.coil.network)
     implementation(libs.compose.ui)
-    implementation(libs.compose.ui.preview)
     implementation(libs.datastore.preferences)
     implementation(libs.gson.converter)
     implementation(libs.hilt)
@@ -77,14 +75,12 @@ dependencies {
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.junit4)
-    implementation(libs.kotlin.coroutine.test)
-    implementation(libs.androidx.ui.tooling)
+    implementation(project(":libs:lib_base"))
+    implementation(project(":libs:lib_ui"))
+
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.androidx.ui.test.junit)
-    testImplementation(libs.robolectric)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.junit4)
 }
 
 kapt {
