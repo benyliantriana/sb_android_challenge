@@ -1,8 +1,8 @@
 package jp.speakbuddy.feature_fact
 
 import jp.speakbuddy.feature_fact.data.Fact
-import jp.speakbuddy.feature_fact.fact.FactUiState
-import jp.speakbuddy.feature_fact.fact.FactViewModel
+import jp.speakbuddy.feature_fact.ui.fact.FactUiState
+import jp.speakbuddy.feature_fact.ui.fact.FactViewModel
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse

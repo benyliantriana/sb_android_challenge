@@ -8,8 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import jp.speakbuddy.feature_fact.fact.FactScreen
-import jp.speakbuddy.lib_base.theme.EdisonAndroidExerciseTheme
+import jp.speakbuddy.feature_fact.ui.fact.FactScreen
 
 /**
  * Main Activity could be moved to feature lib and make the app more clean
@@ -21,7 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            EdisonAndroidExerciseTheme {
+            jp.speakbuddy.lib_ui.theme.EdisonAndroidExerciseTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),

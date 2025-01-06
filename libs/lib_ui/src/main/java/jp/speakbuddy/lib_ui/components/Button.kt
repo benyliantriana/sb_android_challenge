@@ -1,4 +1,4 @@
-package jp.speakbuddy.lib_base.ui.components
+package jp.speakbuddy.lib_ui.components
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
-import jp.speakbuddy.lib_base.R
+import jp.speakbuddy.lib_ui.R
 
 @Composable
 fun DefaultButton(

@@ -77,6 +77,9 @@ dependencies {
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(project(":libs:lib_base"))
+    implementation(project(":libs:lib_ui"))
+
     implementation(libs.junit4)
     implementation(libs.kotlin.coroutine.test)
     implementation(libs.androidx.ui.tooling)

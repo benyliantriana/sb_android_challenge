@@ -8,7 +8,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":libs:lib_base"))
     implementation(project(":libs:lib_network"))
     implementation(project(":libs:lib_datastore"))
 }

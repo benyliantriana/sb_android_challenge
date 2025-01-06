@@ -1,4 +1,4 @@
-package jp.speakbuddy.feature_fact.fact
+package jp.speakbuddy.feature_fact.ui.fact
 
 import jp.speakbuddy.feature_fact.data.Fact
 

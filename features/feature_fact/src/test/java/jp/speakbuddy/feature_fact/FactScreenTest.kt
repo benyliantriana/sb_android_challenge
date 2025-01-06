@@ -5,7 +5,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performClick
 import jp.speakbuddy.feature_fact.data.Fact
-import jp.speakbuddy.feature_fact.fact.FactScreen
+import jp.speakbuddy.feature_fact.ui.fact.FactScreen
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.feature_fact.fake.FakeFactViewModel
 import jp.speakbuddy.lib_network.response.BaseResponse

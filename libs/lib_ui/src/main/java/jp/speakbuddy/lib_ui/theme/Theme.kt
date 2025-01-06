@@ -1,4 +1,4 @@
-package jp.speakbuddy.lib_base.theme
+package jp.speakbuddy.lib_ui.theme
 
 import android.app.Activity
 import android.os.Build

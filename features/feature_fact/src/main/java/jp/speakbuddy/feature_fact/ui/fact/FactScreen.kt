@@ -1,4 +1,4 @@
-package jp.speakbuddy.feature_fact.fact
+package jp.speakbuddy.feature_fact.ui.fact
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -25,11 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.feature_fact.R
 import jp.speakbuddy.feature_fact.util.catImageUrl
-import jp.speakbuddy.lib_base.ui.components.DefaultButton
-import jp.speakbuddy.lib_base.ui.components.TextBody
-import jp.speakbuddy.lib_base.ui.components.TextBodyBold
-import jp.speakbuddy.lib_base.ui.components.TextTitle
-import jp.speakbuddy.lib_base.R as RBase
+import jp.speakbuddy.lib_ui.R as RUi
 
 @Composable
 fun FactScreen(
@@ -77,7 +73,7 @@ private fun LandscapeView(
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(RBase.color.saffron))
+            .background(colorResource(RUi.color.saffron))
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -111,7 +107,7 @@ private fun PortraitView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(RBase.color.saffron))
+            .background(colorResource(RUi.color.saffron))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -153,13 +149,13 @@ private fun FactView(
 
 @Composable
 private fun Title() {
-    TextTitle(stringResource(R.string.fact_title))
+    jp.speakbuddy.lib_ui.components.TextTitle(stringResource(R.string.fact_title))
 }
 
 @Composable
 private fun MultipleCat(hasMultipleCats: Boolean) {
     if (hasMultipleCats) {
-        TextBodyBold(stringResource(R.string.fact_multiple_cats))
+        jp.speakbuddy.lib_ui.components.TextBodyBold(stringResource(R.string.fact_multiple_cats))
         Spacer(Modifier.height(20.dp))
     }
 }
@@ -170,7 +166,7 @@ private fun Fact(factUiState: FactUiState, currentFact: String) {
         is FactUiState.Success -> factUiState.factData.fact
         else -> currentFact
     }
-    TextBody(factDescription)
+    jp.speakbuddy.lib_ui.components.TextBody(factDescription)
 }
 
 @Composable
@@ -180,7 +176,7 @@ private fun FactLength(factUiState: FactUiState, currentFact: String) {
         else -> currentFact.length
     }
     if (length > 100) {
-        TextBodyBold(
+        jp.speakbuddy.lib_ui.components.TextBodyBold(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
@@ -198,9 +194,9 @@ private fun FactUpdateButton(
     val updateButtonText = if (isUpdateButtonEnabled) {
         stringResource(R.string.fact_update_fact)
     } else {
-        stringResource(RBase.string.loading)
+        stringResource(RUi.string.loading)
     }
-    DefaultButton(
+    jp.speakbuddy.lib_ui.components.DefaultButton(
         textButton = updateButtonText,
         isEnabled = isUpdateButtonEnabled,
     ) {
@@ -215,7 +211,7 @@ private fun FactError(factUiState: FactUiState) {
     } else ""
     Text(
         text = textButton,
-        color = colorResource(RBase.color.light_red),
+        color = colorResource(RUi.color.light_red),
         style = MaterialTheme.typography.bodyLarge
     )
 }

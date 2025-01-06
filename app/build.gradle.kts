@@ -60,6 +60,7 @@ android {
 
 dependencies {
     implementation(project(":libs:lib_base"))
+    implementation(project(":libs:lib_ui"))
     implementation(project(":features:feature_fact"))
 
     implementation(libs.activity.compose)
