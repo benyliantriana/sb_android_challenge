@@ -80,14 +80,9 @@ dependencies {
     implementation(project(":libs:lib_base"))
     implementation(project(":libs:lib_ui"))
 
-    implementation(libs.junit4)
-    implementation(libs.kotlin.coroutine.test)
-    implementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.androidx.ui.test.junit)
-    testImplementation(libs.robolectric)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.junit4)
 }
 
 kapt {

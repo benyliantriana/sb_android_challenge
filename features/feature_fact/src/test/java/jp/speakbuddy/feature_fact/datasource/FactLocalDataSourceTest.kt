@@ -1,9 +1,9 @@
-package jp.speakbuddy.feature_fact
+package jp.speakbuddy.feature_fact.datasource
 
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSourceImpl
-import jp.speakbuddy.feature_fact.fake.testDataStore
+import jp.speakbuddy.feature_fact.fake.testFactDataStore
 import jp.speakbuddy.feature_fact.fake.tmpFolder
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
@@ -17,7 +17,7 @@ class FactLocalDataSourceTest {
     private fun getFactLocalDataSource(): FactLocalDataSource {
         tmpFolder.create()
         return FactLocalDataSourceImpl(
-            testDataStore,
+            testFactDataStore,
             coroutineTest.dispatcher
         )
     }

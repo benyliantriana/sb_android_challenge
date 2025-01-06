@@ -1,4 +1,4 @@
-package jp.speakbuddy.feature_fact
+package jp.speakbuddy.feature_fact.viewmodel
 
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.ui.fact.FactUiState

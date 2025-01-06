@@ -1,25 +1,18 @@
-package jp.speakbuddy.feature_fact
+package jp.speakbuddy.feature_fact.screen
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performClick
 import jp.speakbuddy.feature_fact.data.Fact
-import jp.speakbuddy.feature_fact.ui.fact.FactScreen
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.feature_fact.fake.FakeFactViewModel
+import jp.speakbuddy.feature_fact.ui.fact.FactScreen
+import jp.speakbuddy.lib_base.test.ComposableTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.test.runTest
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class FactScreenTest {
-
-    @get:Rule
-    val composeTestRule = createComposeRule()
+class FactScreenTest : ComposableTestExtension() {
 
     private fun getViewModel(
         expectedSavedFact: BaseResponse<Fact> = BaseResponse.Loading,

@@ -12,17 +12,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle)
-    implementation(libs.activity.compose)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.preview)
-    implementation(libs.material3)
-
-    debugImplementation(libs.androidx.ui.tooling)
-
-    implementation(libs.junit4)
-    implementation(libs.kotlin.coroutine.test)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.robolectric)
+    implementation(libs.androidx.ui.test.junit)
 }

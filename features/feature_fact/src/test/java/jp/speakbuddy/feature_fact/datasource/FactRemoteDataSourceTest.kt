@@ -1,4 +1,4 @@
-package jp.speakbuddy.feature_fact
+package jp.speakbuddy.feature_fact.datasource
 
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource

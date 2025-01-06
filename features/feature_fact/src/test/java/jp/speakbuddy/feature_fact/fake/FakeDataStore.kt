@@ -12,7 +12,7 @@ import org.junit.rules.TemporaryFolder
 val tmpFolder: TemporaryFolder = TemporaryFolder.builder().assureDeletion().build()
 
 
-val testDataStore: DataStore<FactPreference> = DataStoreFactory.create(
+val testFactDataStore: DataStore<FactPreference> = DataStoreFactory.create(
     serializer = FactSerializer,
     produceFile = { tmpFolder.newFile("fact_preference.pb") }
 )

@@ -1,10 +1,8 @@
-package jp.speakbuddy.feature_fact
+package jp.speakbuddy.feature_fact.repository
 
 import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.fake.FakeFactLocalDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
-import jp.speakbuddy.feature_fact.repository.FactRepository
-import jp.speakbuddy.feature_fact.repository.FactRepositoryImpl
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.toList
