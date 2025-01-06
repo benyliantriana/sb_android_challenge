@@ -62,11 +62,9 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle)
-    implementation(libs.activity.compose)
     implementation(libs.coil)
     implementation(libs.coil.network)
     implementation(libs.compose.ui)
-    implementation(libs.compose.ui.preview)
     implementation(libs.datastore.preferences)
     implementation(libs.gson.converter)
     implementation(libs.hilt)

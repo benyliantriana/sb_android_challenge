@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.feature_fact.R
+import jp.speakbuddy.feature_fact.R
 import jp.speakbuddy.feature_fact.util.catImageUrl
 import jp.speakbuddy.lib_ui.R as RUi
 

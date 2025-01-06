@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.feature_fact"
+    namespace = "jp.speakbuddy.feature_fact"
 }
 
 dependencies {
