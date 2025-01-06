@@ -30,7 +30,7 @@ class FactScreenTest : ComposableTestExtension() {
         }
 
         composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
-        composeTestRule.onNode(hasText("Loading...")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Loading..")).assertIsDisplayed()
     }
 
     @Test

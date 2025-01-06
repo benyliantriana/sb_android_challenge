@@ -22,7 +22,7 @@ dependencies {
     implementation(libs.material3)
     implementation(project(":libs:lib_base"))
 
-    debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.androidx.ui.test.junit)
+    testImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.junit4)
 }

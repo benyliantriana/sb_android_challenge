@@ -78,7 +78,7 @@ dependencies {
     implementation(project(":libs:lib_base"))
     implementation(project(":libs:lib_ui"))
 
-    debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.androidx.ui.test.junit)
     testImplementation(libs.junit4)
 }
