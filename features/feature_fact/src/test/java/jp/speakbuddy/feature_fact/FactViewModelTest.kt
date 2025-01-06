@@ -7,13 +7,11 @@ import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.first
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.RegisterExtension
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class FactViewModelTest {
     @JvmField
-    @RegisterExtension
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getViewModel(
@@ -36,8 +34,8 @@ class FactViewModelTest {
         val currentFact = viewModel.currentFact.first()
 
         // then
-        Assertions.assertEquals(expected, factUiState)
-        Assertions.assertEquals("", currentFact)
+        assertEquals(expected, factUiState)
+        assertEquals("", currentFact)
     }
 
     @Test
@@ -53,8 +51,8 @@ class FactViewModelTest {
         val currentFact = viewModel.currentFact.first()
 
         // then
-        Assertions.assertEquals(expected, factUiState)
-        Assertions.assertEquals("cat", currentFact)
+        assertEquals(expected, factUiState)
+        assertEquals("cat", currentFact)
     }
 
     @Test
@@ -71,8 +69,8 @@ class FactViewModelTest {
         val currentFact = viewModel.currentFact.first()
 
         // then
-        Assertions.assertEquals(expected, factUiState)
-        Assertions.assertEquals("", currentFact)
+        assertEquals(expected, factUiState)
+        assertEquals("", currentFact)
     }
 
     @Test
@@ -88,8 +86,8 @@ class FactViewModelTest {
         val currentFact = viewModel.currentFact.first()
 
         // then
-        Assertions.assertEquals(expected, factUiState)
-        Assertions.assertEquals("", currentFact)
+        assertEquals(expected, factUiState)
+        assertEquals("", currentFact)
     }
 
     @Test
@@ -106,8 +104,8 @@ class FactViewModelTest {
         val currentFact = viewModel.currentFact.first()
 
         // then
-        Assertions.assertEquals(expected, factUiState)
-        Assertions.assertEquals("cat", currentFact)
+        assertEquals(expected, factUiState)
+        assertEquals("cat", currentFact)
     }
 
     @Test
@@ -125,8 +123,8 @@ class FactViewModelTest {
         val currentFact = viewModel.currentFact.first()
 
         // then
-        Assertions.assertEquals(expected, factUiState)
-        Assertions.assertEquals("", currentFact)
+        assertEquals(expected, factUiState)
+        assertEquals("", currentFact)
     }
 
     @Test
@@ -141,7 +139,7 @@ class FactViewModelTest {
         val result = viewModel.hasMultipleCats.first()
 
         // then
-        Assertions.assertEquals(true, result)
+        assertEquals(true, result)
     }
 
     @Test
@@ -156,6 +154,6 @@ class FactViewModelTest {
         val result = viewModel.hasMultipleCats.first()
 
         // then
-        Assertions.assertEquals(false, result)
+        assertEquals(false, result)
     }
 }

@@ -49,7 +49,13 @@ android {
     }
 
     tasks.withType<Test> {
-        useJUnitPlatform()
+        useJUnit()
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -71,13 +77,14 @@ dependencies {
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.junit)
+    implementation(libs.junit4)
     implementation(libs.kotlin.coroutine.test)
-    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.androidx.ui.test.junit)
+    testImplementation(libs.robolectric)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.ui.test.junit)
 }
 
 kapt {

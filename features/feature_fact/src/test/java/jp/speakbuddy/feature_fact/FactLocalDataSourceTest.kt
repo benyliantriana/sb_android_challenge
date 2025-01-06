@@ -4,18 +4,18 @@ import jp.speakbuddy.feature_fact.data.Fact
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSourceImpl
 import jp.speakbuddy.feature_fact.fake.testDataStore
+import jp.speakbuddy.feature_fact.fake.tmpFolder
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.RegisterExtension
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class FactLocalDataSourceTest {
     @JvmField
-    @RegisterExtension
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getFactLocalDataSource(): FactLocalDataSource {
+        tmpFolder.create()
         return FactLocalDataSourceImpl(
             testDataStore,
             coroutineTest.dispatcher
@@ -34,7 +34,7 @@ class FactLocalDataSourceTest {
         val result = dataSource.getLocalFact()
 
         // then
-        Assertions.assertEquals(expected, result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -50,6 +50,6 @@ class FactLocalDataSourceTest {
         val factData = (result as BaseResponse.Success).data.fact
 
         // then
-        Assertions.assertEquals(expectedFactData, factData)
+        assertEquals(expectedFactData, factData)
     }
 }
