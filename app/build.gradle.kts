@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.detekt)
     kotlin("kapt")
 }
 
@@ -55,6 +56,11 @@ android {
                 "META-INF/service/**"
             )
         )
+    }
+
+    detekt {
+        config.setFrom("../config/detekt/detekt.yml")
+        buildUponDefaultConfig = true
     }
 }
 
