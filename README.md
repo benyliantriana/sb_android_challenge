@@ -56,9 +56,9 @@ project/
 └── libs/            # contains lib modules
 ```
 
-## General Folder Structure for Libs and Feature
+## General Folder Structure for Feature
 ```
-libs/
+feature/
 ├── api/             # api endpoint interface for retrofit
 ├── data/            # data model for retrofit response
 ├── datasource/      # data source for repository, local and remote data source
