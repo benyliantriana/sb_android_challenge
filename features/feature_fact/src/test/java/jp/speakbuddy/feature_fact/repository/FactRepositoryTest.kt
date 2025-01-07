@@ -1,6 +1,6 @@
 package jp.speakbuddy.feature_fact.repository
 
-import jp.speakbuddy.feature_fact.data.response.Fact
+import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.fake.FakeFactLocalDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
@@ -14,8 +14,8 @@ class FactRepositoryTest {
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getRepository(
-        localResult: BaseResponse<Fact> = BaseResponse.Loading,
-        remoteResult: BaseResponse<Fact> = BaseResponse.Loading,
+        localResult: BaseResponse<FactResponse> = BaseResponse.Loading,
+        remoteResult: BaseResponse<FactResponse> = BaseResponse.Loading,
     ): FactRepository {
         return FactRepositoryImpl(
             FakeFactLocalDataSource(localResult),
@@ -31,7 +31,7 @@ class FactRepositoryTest {
             localResult = BaseResponse.Loading
         )
         // when
-        var result: BaseResponse<Fact>? = null
+        var result: BaseResponse<FactResponse>? = null
         repo.getSavedFact().collect {
             result = it
         }
@@ -43,10 +43,10 @@ class FactRepositoryTest {
     @Test
     fun `success state for getSavedFact`() = coroutineTest.runTest {
         // given
-        val fact = Fact("cat", 3)
-        val expected = BaseResponse.Success(fact)
+        val factResponse = FactResponse("cat", 3)
+        val expected = BaseResponse.Success(factResponse)
         val repo = getRepository(
-            localResult = BaseResponse.Success(fact)
+            localResult = BaseResponse.Success(factResponse)
         )
         // when
         val result = repo.getSavedFact().toList()
@@ -61,7 +61,7 @@ class FactRepositoryTest {
         // given
         val code = 404
         val message = "Not found"
-        val expected: BaseResponse<Fact> = BaseResponse.Failed(code, message)
+        val expected: BaseResponse<FactResponse> = BaseResponse.Failed(code, message)
         val repo = getRepository(
             localResult = BaseResponse.Failed(code, message)
         )
@@ -81,7 +81,7 @@ class FactRepositoryTest {
             remoteResult = BaseResponse.Loading
         )
         // when
-        var result: BaseResponse<Fact>? = null
+        var result: BaseResponse<FactResponse>? = null
         repo.updateFact().collect {
             result = it
         }
@@ -93,10 +93,10 @@ class FactRepositoryTest {
     @Test
     fun `success state for updateFact`() = coroutineTest.runTest {
         // given
-        val fact = Fact("cat", 3)
-        val expected = BaseResponse.Success(fact)
+        val factResponse = FactResponse("cat", 3)
+        val expected = BaseResponse.Success(factResponse)
         val repo = getRepository(
-            remoteResult = BaseResponse.Success(fact)
+            remoteResult = BaseResponse.Success(factResponse)
         )
         // when
         val result = repo.updateFact().toList()
@@ -111,7 +111,7 @@ class FactRepositoryTest {
         // given
         val code = 404
         val message = "Not found"
-        val expected: BaseResponse<Fact> = BaseResponse.Failed(code, message)
+        val expected: BaseResponse<FactResponse> = BaseResponse.Failed(code, message)
         val repo = getRepository(
             remoteResult = BaseResponse.Failed(code, message)
         )

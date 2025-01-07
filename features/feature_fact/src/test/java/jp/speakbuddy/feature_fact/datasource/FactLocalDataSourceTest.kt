@@ -1,9 +1,10 @@
 package jp.speakbuddy.feature_fact.datasource
 
-import jp.speakbuddy.feature_fact.data.response.Fact
+import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSourceImpl
 import jp.speakbuddy.feature_fact.fake.testFactDataStore
+import jp.speakbuddy.feature_fact.fake.testFactFavoriteListDataStore
 import jp.speakbuddy.feature_fact.fake.tmpFolder
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
@@ -18,6 +19,7 @@ class FactLocalDataSourceTest {
         tmpFolder.create()
         return FactLocalDataSourceImpl(
             testFactDataStore,
+            testFactFavoriteListDataStore,
             coroutineTest.dispatcher
         )
     }
@@ -25,12 +27,12 @@ class FactLocalDataSourceTest {
     @Test
     fun `success state for getSavedFact`() = coroutineTest.runTest {
         // given
-        val fact = Fact("cat", 3)
-        val expected = BaseResponse.Success(fact)
+        val factResponse = FactResponse("cat", 3)
+        val expected = BaseResponse.Success(factResponse)
         val dataSource = getFactLocalDataSource()
 
         // when
-        dataSource.saveFactToDataStore(fact)
+        dataSource.saveFactToDataStore(factResponse)
         val result = dataSource.getLocalFact()
 
         // then
@@ -44,7 +46,7 @@ class FactLocalDataSourceTest {
         val dataSource = getFactLocalDataSource()
 
         // when
-        dataSource.saveFactToDataStore(Fact("", 0))
+        dataSource.saveFactToDataStore(FactResponse("", 0))
         val result = dataSource.getLocalFact()
         val factData = (result as BaseResponse.Failed).message
 

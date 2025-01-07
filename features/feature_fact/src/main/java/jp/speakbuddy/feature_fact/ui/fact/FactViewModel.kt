@@ -3,6 +3,8 @@ package jp.speakbuddy.feature_fact.ui.fact
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.speakbuddy.feature_fact.data.response.FactResponse
+import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.repository.FactRepository
 import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_network.response.BaseResponse
@@ -21,8 +23,8 @@ open class FactViewModel @Inject constructor(
     val factUiState: StateFlow<FactUiState> get() = _factUiState
 
     // for loading state, because loading state don't have any data
-    private var _currentFact = MutableStateFlow("")
-    val currentFact: StateFlow<String> get() = _currentFact
+    private var _currentFactResponse = MutableStateFlow(FactResponse("", 0))
+    val currentFactResponse: StateFlow<FactResponse> get() = _currentFactResponse
 
     private var _hasMultipleCats = MutableStateFlow(false)
     val hasMultipleCats: StateFlow<Boolean> get() = _hasMultipleCats
@@ -41,7 +43,9 @@ open class FactViewModel @Inject constructor(
 
                     is BaseResponse.Success -> {
                         _factUiState.value = FactUiState.Success(result.data)
-                        _currentFact.value = result.data.fact
+                        _currentFactResponse.value = currentFactResponse.value.copy(
+                            fact = result.data.fact
+                        )
                         _hasMultipleCats.value = hasMultipleCats(result.data.fact)
                     }
 
@@ -63,7 +67,9 @@ open class FactViewModel @Inject constructor(
 
                     is BaseResponse.Success -> {
                         _factUiState.value = FactUiState.Success(result.data)
-                        _currentFact.value = result.data.fact
+                        _currentFactResponse.value = currentFactResponse.value.copy(
+                            fact = result.data.fact
+                        )
                         _hasMultipleCats.value = hasMultipleCats(result.data.fact)
                     }
 
@@ -72,6 +78,18 @@ open class FactViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun saveFactToFavorite(factResponse: FactResponse) {
+        viewModelScope.launch(ioDispatcher) {
+            factRepository.saveFactToFavoriteDataStore(
+                FactUiData(
+                    factResponse.fact,
+                    factResponse.length,
+                    true
+                )
+            )
         }
     }
 

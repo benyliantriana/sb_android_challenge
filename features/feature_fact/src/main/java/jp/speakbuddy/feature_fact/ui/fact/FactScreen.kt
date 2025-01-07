@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import jp.speakbuddy.feature_fact.R
+import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.util.catImageUrl
 import jp.speakbuddy.feature_fact.util.shareFact
 import jp.speakbuddy.lib_ui.components.ButtonText
@@ -43,7 +44,7 @@ fun FactScreen(
     viewModel: FactViewModel = hiltViewModel<FactViewModel>(),
 ) {
     val factUiState = viewModel.factUiState.collectAsStateWithLifecycle().value
-    val currentFact = viewModel.currentFact.collectAsStateWithLifecycle().value
+    val currentFact = viewModel.currentFactResponse.collectAsStateWithLifecycle().value
     val hasMultipleCats = viewModel.hasMultipleCats.collectAsStateWithLifecycle().value
     val isUpdateButtonEnabled = factUiState !is FactUiState.Loading
     val configuration = LocalConfiguration.current
@@ -55,9 +56,13 @@ fun FactScreen(
                 hasMultipleCats = hasMultipleCats,
                 currentFact = currentFact,
                 isUpdateButtonEnabled = isUpdateButtonEnabled,
-            ) {
-                viewModel.updateFact()
-            }
+                updateFact = {
+                    viewModel.updateFact()
+                },
+                saveFactToFavorite = {
+                    viewModel.saveFactToFavorite(it)
+                }
+            )
         }
 
         else -> {
@@ -66,9 +71,13 @@ fun FactScreen(
                 hasMultipleCats = hasMultipleCats,
                 currentFact = currentFact,
                 isUpdateButtonEnabled = isUpdateButtonEnabled,
-            ) {
-                viewModel.updateFact()
-            }
+                updateFact = {
+                    viewModel.updateFact()
+                },
+                saveFactToFavorite = {
+                    viewModel.saveFactToFavorite(it)
+                }
+            )
         }
     }
 }
@@ -77,9 +86,10 @@ fun FactScreen(
 private fun LandscapeView(
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
-    currentFact: String,
+    currentFact: FactResponse,
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
+    saveFactToFavorite: (FactResponse) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -100,9 +110,9 @@ private fun LandscapeView(
                 hasMultipleCats = hasMultipleCats,
                 currentFact = currentFact,
                 isUpdateButtonEnabled = isUpdateButtonEnabled,
-            ) {
-                updateFact()
-            }
+                updateFact = updateFact,
+                saveFactToFavorite = saveFactToFavorite
+            )
         }
     }
 }
@@ -111,9 +121,10 @@ private fun LandscapeView(
 private fun PortraitView(
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
-    currentFact: String,
+    currentFact: FactResponse,
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
+    saveFactToFavorite: (FactResponse) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -129,9 +140,9 @@ private fun PortraitView(
             hasMultipleCats = hasMultipleCats,
             currentFact = currentFact,
             isUpdateButtonEnabled = isUpdateButtonEnabled,
-        ) {
-            updateFact()
-        }
+            updateFact = updateFact,
+            saveFactToFavorite = saveFactToFavorite,
+        )
     }
 }
 
@@ -139,9 +150,10 @@ private fun PortraitView(
 private fun FactView(
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
-    currentFact: String,
+    currentFact: FactResponse,
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
+    saveFactToFavorite: (FactResponse) -> Unit,
 ) {
     Spacer(Modifier.height(20.dp))
     Title()
@@ -151,7 +163,7 @@ private fun FactView(
     Spacer(Modifier.height(10.dp))
     FactLength(factUiState, currentFact)
     Spacer(Modifier.height(10.dp))
-    FactSaveAndShareButton(factUiState, currentFact)
+    FactSaveAndShareButton(factUiState, currentFact, saveFactToFavorite)
     Spacer(Modifier.height(10.dp))
     FactUpdateButton(isUpdateButtonEnabled) {
         updateFact()
@@ -174,19 +186,19 @@ private fun MultipleCat(hasMultipleCats: Boolean) {
 }
 
 @Composable
-private fun Fact(factUiState: FactUiState, currentFact: String) {
+private fun Fact(factUiState: FactUiState, currentFact: FactResponse) {
     val factDescription = when (factUiState) {
-        is FactUiState.Success -> factUiState.factData.fact
-        else -> currentFact
+        is FactUiState.Success -> factUiState.factResponseData.fact
+        else -> currentFact.fact
     }
     TextBody(factDescription)
 }
 
 @Composable
-private fun FactLength(factUiState: FactUiState, currentFact: String) {
+private fun FactLength(factUiState: FactUiState, currentFact: FactResponse) {
     val length = when (factUiState) {
-        is FactUiState.Success -> factUiState.factData.length
-        else -> currentFact.length
+        is FactUiState.Success -> factUiState.factResponseData.length
+        else -> currentFact.fact.length
     }
     if (length > 100) {
         TextBodyBold(
@@ -198,25 +210,31 @@ private fun FactLength(factUiState: FactUiState, currentFact: String) {
 }
 
 @Composable
-private fun FactSaveAndShareButton(factUiState: FactUiState, currentFact: String) {
-    val fact = when (factUiState) {
-        is FactUiState.Success -> factUiState.factData.fact
+private fun FactSaveAndShareButton(
+    factUiState: FactUiState,
+    currentFact: FactResponse,
+    saveFactToFavorite: (FactResponse) -> Unit,
+) {
+    val factData = when (factUiState) {
+        is FactUiState.Success -> factUiState.factResponseData
         else -> currentFact
     }
-    if (fact.isNotEmpty()) {
+    if (factData.fact.isNotEmpty()) {
         val context = LocalContext.current
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(modifier = Modifier.weight(1f))
             IconButtonWithLabel(
                 icon = Icons.Filled.FavoriteBorder,
                 label = "Like"
-            ) {}
+            ) {
+                saveFactToFavorite(factData)
+            }
             Spacer(Modifier.width(8.dp))
             IconButtonWithLabel(
                 icon = Icons.Filled.Share,
                 label = "Share"
             ) {
-                context.shareFact(fact)
+                context.shareFact(factData.fact)
             }
         }
     }

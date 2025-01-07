@@ -1,6 +1,7 @@
 package jp.speakbuddy.feature_fact.repository
 
-import jp.speakbuddy.feature_fact.data.response.Fact
+import jp.speakbuddy.feature_fact.data.response.FactResponse
+import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.lib_base.exception.remoteExceptionHandler
@@ -14,12 +15,12 @@ class FactRepositoryImpl @Inject constructor(
     private val factLocalDataSource: FactLocalDataSource,
     private val factRemoteDataSource: FactRemoteDataSource,
 ) : FactRepository {
-    override suspend fun getSavedFact(): Flow<BaseResponse<Fact>> = flow {
+    override suspend fun getSavedFact(): Flow<BaseResponse<FactResponse>> = flow {
         emit(BaseResponse.Loading)
         emit(getStoredFact())
     }
 
-    override suspend fun updateFact(): Flow<BaseResponse<Fact>> = flow {
+    override suspend fun updateFact(): Flow<BaseResponse<FactResponse>> = flow {
         emit(BaseResponse.Loading)
         val remoteFact = getRemoteFact()
         if (remoteFact is BaseResponse.Success) {
@@ -31,15 +32,19 @@ class FactRepositoryImpl @Inject constructor(
         emit(BaseResponse.Failed(exceptionData.code, exceptionData.message))
     }
 
-    private suspend fun getRemoteFact(): BaseResponse<Fact> {
+    override suspend fun saveFactToFavoriteDataStore(fact: FactUiData) {
+        factLocalDataSource.saveFactToFavoriteDataStore(fact)
+    }
+
+    private suspend fun getRemoteFact(): BaseResponse<FactResponse> {
         return factRemoteDataSource.getRemoteFact()
     }
 
-    private suspend fun getStoredFact(): BaseResponse<Fact> {
+    private suspend fun getStoredFact(): BaseResponse<FactResponse> {
         return factLocalDataSource.getLocalFact()
     }
 
-    private suspend fun storeFact(fact: Fact) {
-        factLocalDataSource.saveFactToDataStore(fact)
+    private suspend fun storeFact(factResponse: FactResponse) {
+        factLocalDataSource.saveFactToDataStore(factResponse)
     }
 }
