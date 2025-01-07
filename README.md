@@ -7,7 +7,7 @@ Cat Facts App is a simple Android application that provides users with random, i
 
 ## Feature
 - **Get Random Cat Facts**: Fetch random cat facts from a public API.
-- **Share Facts**: Share your favorite cat facts with friends via social media or messaging apps. [in progress..]
+- **Share Facts**: Share your favorite cat facts with friends via social media or messaging apps.
 - **Save Favorites**: Mark facts as favorites to view them later. [in progress..]
 
 ## Tech Stack

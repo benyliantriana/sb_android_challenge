@@ -1,6 +1,7 @@
 package jp.speakbuddy.feature_fact.datasource
 
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.FactResponse
+import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
@@ -13,7 +14,7 @@ class FactRemoteDataSourceTest {
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getRemoteLocalDataSource(
-        remoteResult: BaseResponse<Fact> = BaseResponse.Loading,
+        remoteResult: BaseResponse<FactUiData> = BaseResponse.Loading,
     ): FactRemoteDataSource {
         return FakeFactRemoteDataSource(remoteResult)
     }
@@ -21,10 +22,11 @@ class FactRemoteDataSourceTest {
     @Test
     fun `success state for getRemoteFact`() = coroutineTest.runTest {
         // given
-        val fact = Fact("cat", 3)
-        val expected = BaseResponse.Success(fact)
+        val factResponse = FactResponse("cat", 3)
+        val factUiData = FactUiData(factResponse.fact, factResponse.length, false)
+        val expected = BaseResponse.Success(factUiData)
         val dataSource = getRemoteLocalDataSource(
-            BaseResponse.Success(fact)
+            BaseResponse.Success(factUiData)
         )
 
         // when
@@ -39,7 +41,7 @@ class FactRemoteDataSourceTest {
         // given
         val code = 404
         val message = "Not found"
-        val expected: BaseResponse<Fact> = BaseResponse.Failed(code, message)
+        val expected: BaseResponse<FactUiData> = BaseResponse.Failed(code, message)
         val dataSource = getRemoteLocalDataSource(
             BaseResponse.Failed(code, message)
         )
