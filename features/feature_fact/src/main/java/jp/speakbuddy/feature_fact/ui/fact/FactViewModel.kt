@@ -3,7 +3,6 @@ package jp.speakbuddy.feature_fact.ui.fact
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.repository.FactRepository
 import jp.speakbuddy.lib_base.di.IODispatcher
@@ -23,8 +22,8 @@ open class FactViewModel @Inject constructor(
     val factUiState: StateFlow<FactUiState> get() = _factUiState
 
     // for loading state, because loading state don't have any data
-    private var _currentFactResponse = MutableStateFlow(FactResponse("", 0))
-    val currentFactResponse: StateFlow<FactResponse> get() = _currentFactResponse
+    private var _currentFactResponse = MutableStateFlow(FactUiData("", 0, false))
+    val currentFactResponse: StateFlow<FactUiData> get() = _currentFactResponse
 
     private var _hasMultipleCats = MutableStateFlow(false)
     val hasMultipleCats: StateFlow<Boolean> get() = _hasMultipleCats
@@ -81,12 +80,12 @@ open class FactViewModel @Inject constructor(
         }
     }
 
-    fun saveFactToFavorite(factResponse: FactResponse) {
+    fun saveFactToFavorite(factUiData: FactUiData) {
         viewModelScope.launch(ioDispatcher) {
             factRepository.saveFactToFavoriteDataStore(
                 FactUiData(
-                    factResponse.fact,
-                    factResponse.length,
+                    factUiData.fact,
+                    factUiData.length,
                     true
                 )
             )

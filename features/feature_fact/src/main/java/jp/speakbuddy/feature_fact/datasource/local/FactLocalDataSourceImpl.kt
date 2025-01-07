@@ -1,11 +1,9 @@
 package jp.speakbuddy.feature_fact.datasource.local
 
 import androidx.datastore.core.DataStore
-import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_base.exception.localExceptionHandler
-import jp.speakbuddy.lib_datastore.FactFavorite
 import jp.speakbuddy.lib_datastore.FactFavoriteListPreference
 import jp.speakbuddy.lib_datastore.FactPreference
 import jp.speakbuddy.lib_datastore.copy
@@ -25,15 +23,17 @@ class FactLocalDataSourceImpl @Inject constructor(
         private const val NO_SAVED_FACT = "No saved fact"
     }
 
-    override suspend fun getLocalFact(): BaseResponse<FactResponse> = withContext(ioDispatcher) {
-        var result: BaseResponse<FactResponse>
+    override suspend fun getLocalFact(): BaseResponse<FactUiData> = withContext(ioDispatcher) {
+        var result: BaseResponse<FactUiData>
         try {
             val savedFact = factDataStore.data.first()
             result = if (savedFact.fact.isEmpty()) {
                 BaseResponse.Failed(404, NO_SAVED_FACT)
             } else {
+                val favoriteList = getLocalFavoriteFactList()
+                val isFavorite = favoriteList.find { it.fact == savedFact.fact } != null
                 BaseResponse.Success(
-                    FactResponse(savedFact.fact, savedFact.length)
+                    FactUiData(savedFact.fact, savedFact.length, isFavorite)
                 )
             }
         } catch (ioException: IOException) {
@@ -47,13 +47,14 @@ class FactLocalDataSourceImpl @Inject constructor(
         return@withContext result
     }
 
-    override suspend fun saveFactToDataStore(factResponse: FactResponse) {
+    override suspend fun saveFactToDataStore(factData: FactUiData) {
         withContext(ioDispatcher) {
             try {
                 factDataStore.updateData {
                     it.copy {
-                        this.fact = factResponse.fact
-                        this.length = factResponse.length
+                        this.fact = factData.fact
+                        this.length = factData.length
+                        this.isFavorite = factData.isFavorite
                     }
                 }
             } catch (ioException: IOException) {
@@ -63,17 +64,16 @@ class FactLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveFactToFavoriteDataStore(fact: FactUiData) {
+    override suspend fun saveFactToFavoriteDataStore(factData: FactUiData) {
         withContext(ioDispatcher) {
             try {
-                val favoriteFact = FactFavorite.getDefaultInstance().copy {
-                    this.fact = fact.fact
-                    this.length = fact.length
+                val favoriteFact = FactPreference.getDefaultInstance().copy {
+                    this.fact = factData.fact
+                    this.length = factData.length
                     this.isFavorite = true
                 }
 
-                val favoriteList = favoriteFactDataStore.data.first()
-                    .factFavoriteListList.toMutableList()
+                val favoriteList = getLocalFavoriteFactList()
                 val alreadyInList = favoriteList.find { it.fact == favoriteFact.fact } != null
 
                 if (!alreadyInList) {
@@ -90,4 +90,9 @@ class FactLocalDataSourceImpl @Inject constructor(
             }
         }
     }
+
+    private suspend fun getLocalFavoriteFactList(): MutableList<FactPreference> =
+        withContext(ioDispatcher) {
+            return@withContext favoriteFactDataStore.data.first().factFavoriteListList.toMutableList()
+        }
 }

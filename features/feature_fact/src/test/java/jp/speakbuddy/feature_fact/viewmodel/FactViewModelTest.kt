@@ -1,9 +1,9 @@
 package jp.speakbuddy.feature_fact.viewmodel
 
-import jp.speakbuddy.feature_fact.data.response.FactResponse
+import jp.speakbuddy.feature_fact.data.ui.FactUiData
+import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.feature_fact.ui.fact.FactUiState
 import jp.speakbuddy.feature_fact.ui.fact.FactViewModel
-import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.first
@@ -15,8 +15,8 @@ class FactViewModelTest {
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getViewModel(
-        expectedSavedFactResponse: BaseResponse<FactResponse> = BaseResponse.Loading,
-        expectedUpdateFactResponse: BaseResponse<FactResponse> = BaseResponse.Loading,
+        expectedSavedFactResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
+        expectedUpdateFactResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
     ) = FactViewModel(
         FakeFactRepository(expectedSavedFactResponse, expectedUpdateFactResponse),
         ioDispatcher = coroutineTest.dispatcher,
@@ -26,7 +26,7 @@ class FactViewModelTest {
     fun `init loading state for getSavedFact`() = coroutineTest.runTest {
         // given
         val expected = FactUiState.Loading
-        val expectedCurrentFact = FactResponse("", 0)
+        val expectedCurrentFact = FactUiData("", 0, false)
         val viewModel = getViewModel(
             expectedSavedFactResponse = BaseResponse.Loading
         )
@@ -42,9 +42,9 @@ class FactViewModelTest {
     @Test
     fun `success state for getSavedFact`() = coroutineTest.runTest {
         // given
-        val factResponse = FactResponse("cat", 3)
+        val factResponse = FactUiData("cat", 3, false)
         val expected = FactUiState.Success(factResponse)
-        val expectedCurrentFact = FactResponse("cat", 0)
+        val expectedCurrentFact = FactUiData("cat", 0, false)
         val viewModel = getViewModel(
             expectedSavedFactResponse = BaseResponse.Success(factResponse)
         )
@@ -63,7 +63,7 @@ class FactViewModelTest {
         val code = 404
         val message = "Not found"
         val expected = FactUiState.Failed(code, message)
-        val expectedCurrentFact = FactResponse("", 0)
+        val expectedCurrentFact = FactUiData("", 0, false)
         val viewModel = getViewModel(
             expectedSavedFactResponse = BaseResponse.Failed(code, message)
         )
@@ -80,7 +80,7 @@ class FactViewModelTest {
     fun `loading state for updateFact`() = coroutineTest.runTest {
         // given
         val expected = FactUiState.Loading
-        val expectedCurrentFact = FactResponse("", 0)
+        val expectedCurrentFact = FactUiData("", 0, false)
         val viewModel = getViewModel(
             expectedUpdateFactResponse = BaseResponse.Loading
         )
@@ -97,9 +97,9 @@ class FactViewModelTest {
     @Test
     fun `success state for updateFact`() = coroutineTest.runTest {
         // given
-        val factResponse = FactResponse("cat", 3)
+        val factResponse = FactUiData("cat", 3, false)
         val expected = FactUiState.Success(factResponse)
-        val expectedCurrentFact = FactResponse("cat", 0)
+        val expectedCurrentFact = FactUiData("cat", 0, false)
         val viewModel = getViewModel(
             expectedUpdateFactResponse = BaseResponse.Success(factResponse)
         )
@@ -119,7 +119,7 @@ class FactViewModelTest {
         val code = 404
         val message = "Not found"
         val expected = FactUiState.Failed(code, message)
-        val expectedCurrentFact = FactResponse("", 0)
+        val expectedCurrentFact = FactUiData("", 0, false)
         val viewModel = getViewModel(
             expectedUpdateFactResponse = BaseResponse.Failed(code, message)
         )
@@ -136,7 +136,7 @@ class FactViewModelTest {
     @Test
     fun `check if fact has multiple cats`() = coroutineTest.runTest {
         // given
-        val factResponse = FactResponse("cats is an animal", 10)
+        val factResponse = FactUiData("cats is an animal", 10, false)
         val viewModel = getViewModel(
             expectedUpdateFactResponse = BaseResponse.Success(factResponse)
         )
@@ -151,7 +151,7 @@ class FactViewModelTest {
     @Test
     fun `check if fact doesn't has multiple cats`() = coroutineTest.runTest {
         // given
-        val factResponse = FactResponse("cat is an animal", 10)
+        val factResponse = FactUiData("cat is an animal", 10, false)
         val viewModel = getViewModel(
             expectedUpdateFactResponse = BaseResponse.Success(factResponse)
         )

@@ -13,7 +13,6 @@ import jp.speakbuddy.feature_fact.repository.FactRepository
 import jp.speakbuddy.feature_fact.repository.FactRepositoryImpl
 import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_datastore.FactFavoriteListPreference
-import jp.speakbuddy.lib_datastore.FactFavoritePreference
 import jp.speakbuddy.lib_datastore.FactPreference
 import jp.speakbuddy.lib_network.service.ApiService
 import kotlinx.coroutines.CoroutineDispatcher

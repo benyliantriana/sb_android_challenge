@@ -3,7 +3,7 @@ package jp.speakbuddy.feature_fact.screen
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performClick
-import jp.speakbuddy.feature_fact.data.response.FactResponse
+import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.feature_fact.fake.FakeFactViewModel
 import jp.speakbuddy.feature_fact.ui.fact.FactScreen
@@ -15,8 +15,8 @@ import org.junit.Test
 class FactScreenTest : ComposableTestExtension() {
 
     private fun getViewModel(
-        expectedSavedFactResponse: BaseResponse<FactResponse> = BaseResponse.Loading,
-        expectedUpdateFactResponse: BaseResponse<FactResponse> = BaseResponse.Loading,
+        expectedSavedFactResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
+        expectedUpdateFactResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
     ) = FakeFactViewModel(
         FakeFactRepository(expectedSavedFactResponse, expectedUpdateFactResponse),
     )
@@ -36,7 +36,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state no multiple cat`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactResponse("some fact", 0)),
+            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some fact", 0, false)),
         )
 
         composeTestRule.setContent {
@@ -53,7 +53,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state has multiple cats`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactResponse("some cats", 0)),
+            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some cats", 0, false)),
         )
 
         composeTestRule.setContent {
@@ -70,7 +70,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state has length more than 100`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactResponse("some cats", 102)),
+            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some cats", 102, false)),
         )
 
         composeTestRule.setContent {
@@ -89,7 +89,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state has length below 100`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactResponse("some cats", 5)),
+            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some cats", 5, false)),
         )
 
         composeTestRule.setContent {
@@ -107,8 +107,14 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state from remote and replace local value`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactResponse("some fact", 0)),
-            expectedUpdateFactResponse = BaseResponse.Success(FactResponse("some another fact", 102)),
+            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some fact", 0, false)),
+            expectedUpdateFactResponse = BaseResponse.Success(
+                FactUiData(
+                    "some another fact",
+                    102,
+                    false
+                )
+            ),
         )
 
         composeTestRule.setContent {
@@ -126,7 +132,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test failed state and still show the fact`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactResponse("some fact", 0)),
+            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some fact", 0, false)),
             expectedUpdateFactResponse = BaseResponse.Failed(code = 404, message = "Not found"),
         )
 

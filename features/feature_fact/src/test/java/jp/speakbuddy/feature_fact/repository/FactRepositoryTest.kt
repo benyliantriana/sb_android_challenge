@@ -1,6 +1,7 @@
 package jp.speakbuddy.feature_fact.repository
 
 import jp.speakbuddy.feature_fact.data.response.FactResponse
+import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.fake.FakeFactLocalDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
@@ -14,8 +15,8 @@ class FactRepositoryTest {
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getRepository(
-        localResult: BaseResponse<FactResponse> = BaseResponse.Loading,
-        remoteResult: BaseResponse<FactResponse> = BaseResponse.Loading,
+        localResult: BaseResponse<FactUiData> = BaseResponse.Loading,
+        remoteResult: BaseResponse<FactUiData> = BaseResponse.Loading,
     ): FactRepository {
         return FactRepositoryImpl(
             FakeFactLocalDataSource(localResult),
@@ -31,7 +32,7 @@ class FactRepositoryTest {
             localResult = BaseResponse.Loading
         )
         // when
-        var result: BaseResponse<FactResponse>? = null
+        var result: BaseResponse<FactUiData>? = null
         repo.getSavedFact().collect {
             result = it
         }
@@ -43,7 +44,7 @@ class FactRepositoryTest {
     @Test
     fun `success state for getSavedFact`() = coroutineTest.runTest {
         // given
-        val factResponse = FactResponse("cat", 3)
+        val factResponse = FactUiData("cat", 3, false)
         val expected = BaseResponse.Success(factResponse)
         val repo = getRepository(
             localResult = BaseResponse.Success(factResponse)
@@ -81,7 +82,7 @@ class FactRepositoryTest {
             remoteResult = BaseResponse.Loading
         )
         // when
-        var result: BaseResponse<FactResponse>? = null
+        var result: BaseResponse<FactUiData>? = null
         repo.updateFact().collect {
             result = it
         }
@@ -93,7 +94,7 @@ class FactRepositoryTest {
     @Test
     fun `success state for updateFact`() = coroutineTest.runTest {
         // given
-        val factResponse = FactResponse("cat", 3)
+        val factResponse = FactUiData("cat", 3, false)
         val expected = BaseResponse.Success(factResponse)
         val repo = getRepository(
             remoteResult = BaseResponse.Success(factResponse)

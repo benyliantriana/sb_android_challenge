@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import jp.speakbuddy.feature_fact.R
-import jp.speakbuddy.feature_fact.data.response.FactResponse
+import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.util.catImageUrl
 import jp.speakbuddy.feature_fact.util.shareFact
 import jp.speakbuddy.lib_ui.components.ButtonText
@@ -86,10 +86,10 @@ fun FactScreen(
 private fun LandscapeView(
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
-    currentFact: FactResponse,
+    currentFact: FactUiData,
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
-    saveFactToFavorite: (FactResponse) -> Unit,
+    saveFactToFavorite: (FactUiData) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -121,10 +121,10 @@ private fun LandscapeView(
 private fun PortraitView(
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
-    currentFact: FactResponse,
+    currentFact: FactUiData,
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
-    saveFactToFavorite: (FactResponse) -> Unit,
+    saveFactToFavorite: (FactUiData) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -150,10 +150,10 @@ private fun PortraitView(
 private fun FactView(
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
-    currentFact: FactResponse,
+    currentFact: FactUiData,
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
-    saveFactToFavorite: (FactResponse) -> Unit,
+    saveFactToFavorite: (FactUiData) -> Unit,
 ) {
     Spacer(Modifier.height(20.dp))
     Title()
@@ -186,18 +186,18 @@ private fun MultipleCat(hasMultipleCats: Boolean) {
 }
 
 @Composable
-private fun Fact(factUiState: FactUiState, currentFact: FactResponse) {
+private fun Fact(factUiState: FactUiState, currentFact: FactUiData) {
     val factDescription = when (factUiState) {
-        is FactUiState.Success -> factUiState.factResponseData.fact
+        is FactUiState.Success -> factUiState.factUiData.fact
         else -> currentFact.fact
     }
     TextBody(factDescription)
 }
 
 @Composable
-private fun FactLength(factUiState: FactUiState, currentFact: FactResponse) {
+private fun FactLength(factUiState: FactUiState, currentFact: FactUiData) {
     val length = when (factUiState) {
-        is FactUiState.Success -> factUiState.factResponseData.length
+        is FactUiState.Success -> factUiState.factUiData.length
         else -> currentFact.fact.length
     }
     if (length > 100) {
@@ -212,11 +212,11 @@ private fun FactLength(factUiState: FactUiState, currentFact: FactResponse) {
 @Composable
 private fun FactSaveAndShareButton(
     factUiState: FactUiState,
-    currentFact: FactResponse,
-    saveFactToFavorite: (FactResponse) -> Unit,
+    currentFact: FactUiData,
+    saveFactToFavorite: (FactUiData) -> Unit,
 ) {
     val factData = when (factUiState) {
-        is FactUiState.Success -> factUiState.factResponseData
+        is FactUiState.Success -> factUiState.factUiData
         else -> currentFact
     }
     if (factData.fact.isNotEmpty()) {

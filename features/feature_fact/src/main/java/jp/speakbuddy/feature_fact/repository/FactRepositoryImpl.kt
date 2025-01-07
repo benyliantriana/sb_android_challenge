@@ -1,6 +1,5 @@
 package jp.speakbuddy.feature_fact.repository
 
-import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
@@ -15,12 +14,12 @@ class FactRepositoryImpl @Inject constructor(
     private val factLocalDataSource: FactLocalDataSource,
     private val factRemoteDataSource: FactRemoteDataSource,
 ) : FactRepository {
-    override suspend fun getSavedFact(): Flow<BaseResponse<FactResponse>> = flow {
+    override suspend fun getSavedFact(): Flow<BaseResponse<FactUiData>> = flow {
         emit(BaseResponse.Loading)
         emit(getStoredFact())
     }
 
-    override suspend fun updateFact(): Flow<BaseResponse<FactResponse>> = flow {
+    override suspend fun updateFact(): Flow<BaseResponse<FactUiData>> = flow {
         emit(BaseResponse.Loading)
         val remoteFact = getRemoteFact()
         if (remoteFact is BaseResponse.Success) {
@@ -36,15 +35,15 @@ class FactRepositoryImpl @Inject constructor(
         factLocalDataSource.saveFactToFavoriteDataStore(fact)
     }
 
-    private suspend fun getRemoteFact(): BaseResponse<FactResponse> {
+    private suspend fun getRemoteFact(): BaseResponse<FactUiData> {
         return factRemoteDataSource.getRemoteFact()
     }
 
-    private suspend fun getStoredFact(): BaseResponse<FactResponse> {
+    private suspend fun getStoredFact(): BaseResponse<FactUiData> {
         return factLocalDataSource.getLocalFact()
     }
 
-    private suspend fun storeFact(factResponse: FactResponse) {
-        factLocalDataSource.saveFactToDataStore(factResponse)
+    private suspend fun storeFact(fact: FactUiData) {
+        factLocalDataSource.saveFactToDataStore(fact)
     }
 }
