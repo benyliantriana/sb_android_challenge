@@ -1,6 +1,6 @@
 package jp.speakbuddy.feature_fact.datasource
 
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.Fact
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension

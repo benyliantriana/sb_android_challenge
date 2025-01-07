@@ -1,6 +1,6 @@
 package jp.speakbuddy.feature_fact.api
 
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.Fact
 import retrofit2.Call
 import retrofit2.http.GET
 

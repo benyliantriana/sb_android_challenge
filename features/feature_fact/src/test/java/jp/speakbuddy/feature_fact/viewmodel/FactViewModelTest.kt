@@ -1,6 +1,6 @@
 package jp.speakbuddy.feature_fact.viewmodel
 
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.Fact
 import jp.speakbuddy.feature_fact.ui.fact.FactUiState
 import jp.speakbuddy.feature_fact.ui.fact.FactViewModel
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository

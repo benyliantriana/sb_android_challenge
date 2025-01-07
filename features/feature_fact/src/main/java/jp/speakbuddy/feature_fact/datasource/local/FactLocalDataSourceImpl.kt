@@ -1,7 +1,7 @@
 package jp.speakbuddy.feature_fact.datasource.local
 
 import androidx.datastore.core.DataStore
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.Fact
 import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_base.exception.localExceptionHandler
 import jp.speakbuddy.lib_datastore.FactPreference
@@ -25,10 +25,13 @@ class FactLocalDataSourceImpl @Inject constructor(
         var result: BaseResponse<Fact>
         try {
             val savedFact = factDataStore.data.first()
-            val factDescription = savedFact.fact.ifEmpty { NO_SAVED_FACT }
-            result = BaseResponse.Success(
-                Fact(factDescription, savedFact.length)
-            )
+            result = if (savedFact.fact.isEmpty()) {
+                BaseResponse.Failed(404, NO_SAVED_FACT)
+            } else {
+                BaseResponse.Success(
+                    Fact(savedFact.fact, savedFact.length)
+                )
+            }
         } catch (ioException: IOException) {
             val exceptionData = localExceptionHandler(ioException)
             result = BaseResponse.Failed(

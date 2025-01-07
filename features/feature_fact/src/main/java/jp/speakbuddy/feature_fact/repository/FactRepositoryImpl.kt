@@ -1,6 +1,6 @@
 package jp.speakbuddy.feature_fact.repository
 
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.Fact
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.lib_base.exception.remoteExceptionHandler

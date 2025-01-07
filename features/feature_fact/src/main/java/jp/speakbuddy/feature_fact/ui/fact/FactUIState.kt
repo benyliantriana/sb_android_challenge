@@ -1,6 +1,6 @@
 package jp.speakbuddy.feature_fact.ui.fact
 
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.Fact
 
 sealed class FactUiState {
     data object Loading : FactUiState()

@@ -3,7 +3,7 @@ package jp.speakbuddy.feature_fact.screen
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performClick
-import jp.speakbuddy.feature_fact.data.Fact
+import jp.speakbuddy.feature_fact.data.response.Fact
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.feature_fact.fake.FakeFactViewModel
 import jp.speakbuddy.feature_fact.ui.fact.FactScreen
@@ -72,6 +72,7 @@ class FactScreenTest : ComposableTestExtension() {
         composeTestRule.setContent {
             FactScreen(viewModel)
         }
+        println(viewModel.factUiState.value)
         composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some cats")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed()

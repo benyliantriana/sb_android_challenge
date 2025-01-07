@@ -1,4 +1,4 @@
-package jp.speakbuddy.feature_fact.data
+package jp.speakbuddy.feature_fact.data.response
 
 import kotlinx.serialization.Serializable
 
