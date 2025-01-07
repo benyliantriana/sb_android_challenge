@@ -29,7 +29,7 @@ class FactScreenTest : ComposableTestExtension() {
             FactScreen(viewModel)
         }
 
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Loading..")).assertIsDisplayed()
     }
 
@@ -42,7 +42,7 @@ class FactScreenTest : ComposableTestExtension() {
         composeTestRule.setContent {
             FactScreen(viewModel)
         }
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Like")).assertIsDisplayed()
@@ -59,7 +59,7 @@ class FactScreenTest : ComposableTestExtension() {
         composeTestRule.setContent {
             FactScreen(viewModel)
         }
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some cats")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Like")).assertIsDisplayed()
@@ -77,7 +77,7 @@ class FactScreenTest : ComposableTestExtension() {
             FactScreen(viewModel)
         }
         println(viewModel.factUiState.value)
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some cats")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Multiple cats!!!")).assertIsDisplayed()
@@ -95,7 +95,7 @@ class FactScreenTest : ComposableTestExtension() {
         composeTestRule.setContent {
             FactScreen(viewModel)
         }
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some cats")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Multiple cats!!!")).assertIsDisplayed()
@@ -120,7 +120,7 @@ class FactScreenTest : ComposableTestExtension() {
         composeTestRule.setContent {
             FactScreen(viewModel)
         }
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed().performClick()
         composeTestRule.onNode(hasText("some another fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Multiple cats!!!")).assertDoesNotExist()
@@ -139,7 +139,7 @@ class FactScreenTest : ComposableTestExtension() {
         composeTestRule.setContent {
             FactScreen(viewModel)
         }
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed().performClick()
         composeTestRule.onNode(hasText("Multiple cats!!!")).assertDoesNotExist()
@@ -158,7 +158,7 @@ class FactScreenTest : ComposableTestExtension() {
         composeTestRule.setContent {
             FactScreen(viewModel)
         }
-        composeTestRule.onNode(hasText("Fact")).assertIsDisplayed()
+        composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed().performClick()
         composeTestRule.onNode(hasText("Multiple cats!!!")).assertDoesNotExist()
         composeTestRule.onNode(hasText("Like")).assertDoesNotExist()

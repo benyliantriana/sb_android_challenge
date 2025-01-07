@@ -6,9 +6,11 @@ import jp.speakbuddy.lib_network.response.BaseResponse
 
 class FakeFactLocalDataSource(
     private val localResult: BaseResponse<FactUiData> = BaseResponse.Loading,
+    private val alreadyFavoriteFactResult: Boolean = false
 ) : FactLocalDataSource {
     override suspend fun getLocalFact(): BaseResponse<FactUiData> = localResult
 
     override suspend fun saveFactToDataStore(factData: FactUiData) {}
     override suspend fun saveFactToFavoriteDataStore(factData: FactUiData) {}
+    override suspend fun alreadyFavoriteFact(factData: FactUiData): Boolean = alreadyFavoriteFactResult
 }

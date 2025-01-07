@@ -44,7 +44,7 @@ class FactViewModelTest {
         // given
         val factResponse = FactUiData("cat", 3, false)
         val expected = FactUiState.Success(factResponse)
-        val expectedCurrentFact = FactUiData("cat", 0, false)
+        val expectedCurrentFact = FactUiData("cat", 3, false)
         val viewModel = getViewModel(
             expectedSavedFactResponse = BaseResponse.Success(factResponse)
         )
@@ -99,7 +99,7 @@ class FactViewModelTest {
         // given
         val factResponse = FactUiData("cat", 3, false)
         val expected = FactUiState.Success(factResponse)
-        val expectedCurrentFact = FactUiData("cat", 0, false)
+        val expectedCurrentFact = FactUiData("cat", 3, false)
         val viewModel = getViewModel(
             expectedUpdateFactResponse = BaseResponse.Success(factResponse)
         )
