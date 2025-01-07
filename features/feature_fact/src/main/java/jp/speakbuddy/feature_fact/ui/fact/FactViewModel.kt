@@ -42,9 +42,7 @@ open class FactViewModel @Inject constructor(
 
                     is BaseResponse.Success -> {
                         _factUiState.value = FactUiState.Success(result.data)
-                        _currentFactResponse.value = currentFactResponse.value.copy(
-                            fact = result.data.fact
-                        )
+                        _currentFactResponse.value = result.data
                         _hasMultipleCats.value = hasMultipleCats(result.data.fact)
                     }
 
@@ -66,9 +64,7 @@ open class FactViewModel @Inject constructor(
 
                     is BaseResponse.Success -> {
                         _factUiState.value = FactUiState.Success(result.data)
-                        _currentFactResponse.value = currentFactResponse.value.copy(
-                            fact = result.data.fact
-                        )
+                        _currentFactResponse.value = result.data
                         _hasMultipleCats.value = hasMultipleCats(result.data.fact)
                     }
 
@@ -86,8 +82,16 @@ open class FactViewModel @Inject constructor(
                 FactUiData(
                     factUiData.fact,
                     factUiData.length,
-                    true
+                    !factUiData.isFavorite
                 )
+            )
+            _factUiState.value = FactUiState.Success(
+                factUiData.copy(
+                    isFavorite = !factUiData.isFavorite
+                )
+            )
+            _currentFactResponse.value = currentFactResponse.value.copy(
+                isFavorite = !factUiData.isFavorite
             )
         }
     }

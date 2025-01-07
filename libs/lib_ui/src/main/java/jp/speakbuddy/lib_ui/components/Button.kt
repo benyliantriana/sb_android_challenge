@@ -12,10 +12,12 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +52,7 @@ fun IconButtonWithLabel(
     label: String,
     contentDescription: String? = null,
     modifier: Modifier = Modifier,
+    tintColor: Color = LocalContentColor.current,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -65,6 +68,7 @@ fun IconButtonWithLabel(
             modifier = Modifier.size(24.dp),
             imageVector = icon,
             contentDescription = contentDescription,
+            tint = tintColor
         )
         Spacer(Modifier.width(4.dp))
         TextBody(label)

@@ -23,9 +23,16 @@ class FactRepositoryImpl @Inject constructor(
         emit(BaseResponse.Loading)
         val remoteFact = getRemoteFact()
         if (remoteFact is BaseResponse.Success) {
-            storeFact(remoteFact.data)
+            val alreadyInFavorite = factLocalDataSource.alreadyFavoriteFact(remoteFact.data)
+            storeFact(
+                remoteFact.data.copy(isFavorite = alreadyInFavorite)
+            )
+            emit(
+                BaseResponse.Success(remoteFact.data.copy(isFavorite = alreadyInFavorite))
+            )
+        } else {
+            emit(remoteFact)
         }
-        emit(remoteFact)
     }.catch {
         val exceptionData = remoteExceptionHandler(it)
         emit(BaseResponse.Failed(exceptionData.code, exceptionData.message))

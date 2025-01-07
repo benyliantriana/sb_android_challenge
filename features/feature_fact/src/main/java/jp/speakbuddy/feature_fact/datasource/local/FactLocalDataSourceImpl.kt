@@ -67,32 +67,61 @@ class FactLocalDataSourceImpl @Inject constructor(
     override suspend fun saveFactToFavoriteDataStore(factData: FactUiData) {
         withContext(ioDispatcher) {
             try {
-                val favoriteFact = FactPreference.getDefaultInstance().copy {
-                    this.fact = factData.fact
-                    this.length = factData.length
-                    this.isFavorite = true
+                if (factData.isFavorite) {
+                    addFavoriteFact(factData)
+                } else {
+                    removeFavoriteFact(factData)
                 }
 
-                val favoriteList = getLocalFavoriteFactList()
-                val alreadyInList = favoriteList.find { it.fact == favoriteFact.fact } != null
-
-                if (!alreadyInList) {
-                    favoriteList.add(favoriteFact)
-                    favoriteFactDataStore.updateData {
-                        it.toBuilder()
-                            .clearFactFavoriteList()
-                            .addAllFactFavoriteList(favoriteList)
-                            .build()
-                    }
-                }
             } catch (ioException: IOException) {
                 throw ioException
             }
         }
     }
 
+    override suspend fun alreadyFavoriteFact(factData: FactUiData) = withContext(ioDispatcher) {
+        val favoriteList = getLocalFavoriteFactList()
+        return@withContext favoriteList.find { it.fact == factData.fact } != null
+    }
+
     private suspend fun getLocalFavoriteFactList(): MutableList<FactPreference> =
         withContext(ioDispatcher) {
             return@withContext favoriteFactDataStore.data.first().factFavoriteListList.toMutableList()
         }
+
+    private suspend fun addFavoriteFact(factData: FactUiData) {
+        withContext(ioDispatcher) {
+            val favoriteFact = FactPreference.getDefaultInstance().copy {
+                this.fact = factData.fact
+                this.length = factData.length
+                this.isFavorite = true
+            }
+
+            val favoriteList = getLocalFavoriteFactList()
+            favoriteList.add(favoriteFact)
+            favoriteFactDataStore.updateData {
+                it.toBuilder()
+                    .clearFactFavoriteList()
+                    .addAllFactFavoriteList(favoriteList)
+                    .build()
+            }
+        }
+    }
+
+    private suspend fun removeFavoriteFact(factData: FactUiData) {
+        withContext(ioDispatcher) {
+            val favoriteList = getLocalFavoriteFactList()
+            val favoriteFact = favoriteList.find { it.fact == factData.fact }
+            favoriteFact?.let {
+                favoriteList.remove(it)
+            }
+
+            favoriteFactDataStore.updateData {
+                it.toBuilder()
+                    .clearFactFavoriteList()
+                    .addAllFactFavoriteList(favoriteList)
+                    .build()
+            }
+        }
+    }
 }

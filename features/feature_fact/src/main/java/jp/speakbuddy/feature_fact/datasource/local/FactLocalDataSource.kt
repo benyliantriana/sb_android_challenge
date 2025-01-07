@@ -7,4 +7,5 @@ interface FactLocalDataSource {
     suspend fun getLocalFact(): BaseResponse<FactUiData>
     suspend fun saveFactToDataStore(factData: FactUiData)
     suspend fun saveFactToFavoriteDataStore(factData: FactUiData)
+    suspend fun alreadyFavoriteFact(factData: FactUiData): Boolean
 }

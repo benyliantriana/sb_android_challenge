@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fact_title">Fact</string>
+    <string name="fact_title">Cat Fact</string>
     <string name="fact_update_fact">Update Fact</string>
     <string name="fact_length">Length: %d</string>
     <string name="fact_multiple_cats">Multiple cats!!!</string>
+    <string name="fact_like">Like</string>
+    <string name="fact_liked">Liked</string>
+    <string name="fact_share">Share</string>
 </resources>

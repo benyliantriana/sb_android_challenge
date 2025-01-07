@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.MaterialTheme
@@ -160,7 +161,6 @@ private fun FactView(
     Spacer(Modifier.height(20.dp))
     MultipleCat(hasMultipleCats)
     Fact(factUiState, currentFact)
-    Spacer(Modifier.height(10.dp))
     FactLength(factUiState, currentFact)
     Spacer(Modifier.height(10.dp))
     FactSaveAndShareButton(factUiState, currentFact, saveFactToFavorite)
@@ -191,7 +191,10 @@ private fun Fact(factUiState: FactUiState, currentFact: FactUiData) {
         is FactUiState.Success -> factUiState.factUiData.fact
         else -> currentFact.fact
     }
-    TextBody(factDescription)
+    if (factDescription.isNotEmpty()) {
+        TextBody(factDescription)
+        Spacer(Modifier.height(10.dp))
+    }
 }
 
 @Composable
@@ -223,16 +226,26 @@ private fun FactSaveAndShareButton(
         val context = LocalContext.current
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(modifier = Modifier.weight(1f))
-            IconButtonWithLabel(
-                icon = Icons.Filled.FavoriteBorder,
-                label = "Like"
-            ) {
-                saveFactToFavorite(factData)
+            if (factData.isFavorite) {
+                IconButtonWithLabel(
+                    icon = Icons.Filled.Favorite,
+                    label = stringResource(R.string.fact_liked),
+                    tintColor = colorResource(RUi.color.light_red)
+                ) {
+                    saveFactToFavorite(factData)
+                }
+            } else {
+                IconButtonWithLabel(
+                    icon = Icons.Filled.FavoriteBorder,
+                    label = stringResource(R.string.fact_like)
+                ) {
+                    saveFactToFavorite(factData)
+                }
             }
             Spacer(Modifier.width(8.dp))
             IconButtonWithLabel(
                 icon = Icons.Filled.Share,
-                label = "Share"
+                label = stringResource(R.string.fact_share)
             ) {
                 context.shareFact(factData.fact)
             }
