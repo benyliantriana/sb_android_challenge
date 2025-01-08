@@ -6,15 +6,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -62,43 +66,52 @@ fun FactScreen(
         }
     }
 
-    when (configuration.orientation) {
-        Configuration.ORIENTATION_LANDSCAPE -> {
-            LandscapeView(
-                factUiState = factUiState,
-                hasMultipleCats = hasMultipleCats,
-                currentFact = currentFact,
-                isUpdateButtonEnabled = isUpdateButtonEnabled,
-                updateFact = {
-                    viewModel.updateFact()
-                },
-                saveFactToFavorite = {
-                    viewModel.saveOrRemoveFactInFavorite(it)
-                },
-                navigateToFavoriteScreen = navigateToFavoriteScreen
-            )
-        }
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars)
+    ) { innerPadding ->
+        when (configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                LandscapeView(
+                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
+                    factUiState = factUiState,
+                    hasMultipleCats = hasMultipleCats,
+                    currentFact = currentFact,
+                    isUpdateButtonEnabled = isUpdateButtonEnabled,
+                    updateFact = {
+                        viewModel.updateFact()
+                    },
+                    saveFactToFavorite = {
+                        viewModel.saveOrRemoveFactInFavorite(it)
+                    },
+                    navigateToFavoriteScreen = navigateToFavoriteScreen
+                )
+            }
 
-        else -> {
-            PortraitView(
-                factUiState = factUiState,
-                hasMultipleCats = hasMultipleCats,
-                currentFact = currentFact,
-                isUpdateButtonEnabled = isUpdateButtonEnabled,
-                updateFact = {
-                    viewModel.updateFact()
-                },
-                saveFactToFavorite = {
-                    viewModel.saveOrRemoveFactInFavorite(it)
-                },
-                navigateToFavoriteScreen = navigateToFavoriteScreen
-            )
+            else -> {
+                PortraitView(
+                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
+                    factUiState = factUiState,
+                    hasMultipleCats = hasMultipleCats,
+                    currentFact = currentFact,
+                    isUpdateButtonEnabled = isUpdateButtonEnabled,
+                    updateFact = {
+                        viewModel.updateFact()
+                    },
+                    saveFactToFavorite = {
+                        viewModel.saveOrRemoveFactInFavorite(it)
+                    },
+                    navigateToFavoriteScreen = navigateToFavoriteScreen
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun LandscapeView(
+    modifier: Modifier = Modifier,
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
     currentFact: FactUiData,
@@ -108,7 +121,7 @@ private fun LandscapeView(
     navigateToFavoriteScreen: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(RUi.color.saffron))
             .padding(16.dp),
@@ -132,6 +145,7 @@ private fun LandscapeView(
 
 @Composable
 private fun PortraitView(
+    modifier: Modifier = Modifier,
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
     currentFact: FactUiData,
@@ -141,7 +155,7 @@ private fun PortraitView(
     navigateToFavoriteScreen: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(RUi.color.saffron))
             .padding(16.dp),

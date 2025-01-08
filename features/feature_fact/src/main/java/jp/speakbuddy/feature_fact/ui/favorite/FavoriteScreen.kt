@@ -1,17 +1,20 @@
 package jp.speakbuddy.feature_fact.ui.favorite
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -44,7 +47,6 @@ import jp.speakbuddy.lib_ui.components.TextTitle
 import kotlinx.coroutines.launch
 import jp.speakbuddy.lib_ui.R as RUi
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel<FavoriteViewModel>(),
@@ -82,15 +84,18 @@ fun FavoriteScreen(
     }
 
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars),
         snackbarHost = { SnackbarHost(snackBarHostState) },
-        content = { _ ->
+        content = { innerPadding ->
             Column(
                 modifier = Modifier
+                    .padding(top = innerPadding.calculateTopPadding())
                     .background(colorResource(RUi.color.saffron))
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
-                Spacer(Modifier.height(10.dp))
                 BackButton {
                     snackBarHostState.currentSnackbarData?.dismiss()
                     navigateUp()

@@ -41,7 +41,8 @@ private val LightColorScheme = lightColorScheme(
 @Suppress("DEPRECATION")
 @Composable
 fun EdisonAndroidExerciseTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    // disable dark mode
+    darkTheme: Boolean = false,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
@@ -61,7 +62,7 @@ fun EdisonAndroidExerciseTheme(
             val currentWindow = (view.context as? Activity)?.window
                 ?: throw Exception(context.getString(R.string.activity_exception))
 
-            currentWindow.statusBarColor = colorScheme.primary.toArgb()
+            currentWindow.statusBarColor = Saffron.toArgb()
             WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars =
                 darkTheme
         }
