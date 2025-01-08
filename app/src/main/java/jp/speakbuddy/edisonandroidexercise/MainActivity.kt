@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Suppress("TopLevelPropertyNaming", "FunctionNaming")
 @Composable
 private fun EdisonAndroidExercise() {
     EdisonAndroidExerciseTheme {
