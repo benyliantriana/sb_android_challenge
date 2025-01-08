@@ -65,9 +65,9 @@ fun IconButtonWithLabel(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            modifier = Modifier.size(24.dp),
             imageVector = icon,
             contentDescription = contentDescription,
+            modifier = Modifier.size(24.dp),
             tint = tintColor
         )
         Spacer(Modifier.width(4.dp))

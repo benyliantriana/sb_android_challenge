@@ -54,11 +54,14 @@ fun FavoriteScreen(
     val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    val snackBarText = stringResource(R.string.fact_remove_favorite)
+    val undoTextAction = stringResource(R.string.fact_undo)
+
     fun showRemoveFactSnackBar() {
         scope.launch {
             val result = snackBarHostState.showSnackbar(
-                message = "Fact removed from favorite",
-                actionLabel = "Undo",
+                message = snackBarText,
+                actionLabel = undoTextAction,
                 duration = SnackbarDuration.Short
             )
             when (result) {
@@ -83,8 +86,8 @@ fun FavoriteScreen(
         content = { _ ->
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
                     .background(colorResource(RUi.color.saffron))
+                    .fillMaxSize()
                     .padding(16.dp)
             ) {
                 Spacer(Modifier.height(10.dp))
@@ -143,7 +146,9 @@ private fun FavoriteList(
             }
         }
 
-        else -> {}
+        else -> {
+            // todo implement loading state and failed (empty) state
+        }
     }
 }
 
@@ -156,7 +161,7 @@ private fun FavoriteFact(
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
+            defaultElevation = 4.dp
         )
     ) {
         TextBody(
@@ -164,7 +169,7 @@ private fun FavoriteFact(
             modifier = Modifier.padding(8.dp)
         )
         TextBody(
-            text = "remove",
+            text = stringResource(R.string.fact_remove),
             color = colorResource(RUi.color.light_red),
             textAlign = TextAlign.Right,
             modifier = Modifier

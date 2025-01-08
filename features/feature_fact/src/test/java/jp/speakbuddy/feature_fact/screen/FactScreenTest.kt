@@ -15,15 +15,15 @@ import org.junit.Test
 class FactScreenTest : ComposableTestExtension() {
 
     private fun getViewModel(
-        expectedSavedFactResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
-        expectedUpdateFactResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
+        savedFactResult: BaseResponse<FactUiData> = BaseResponse.Loading,
+        updateFactResult: BaseResponse<FactUiData> = BaseResponse.Loading,
     ) = FakeFactViewModel(
-        FakeFactRepository(expectedSavedFactResponse, expectedUpdateFactResponse),
+        FakeFactRepository(savedFactResult, updateFactResult),
     )
 
     @Test
     fun `test loading state FactScreen`() = runTest {
-        val viewModel = getViewModel(expectedSavedFactResponse = BaseResponse.Loading)
+        val viewModel = getViewModel(savedFactResult = BaseResponse.Loading)
 
         composeTestRule.setContent {
             FactScreen(viewModel) {}
@@ -36,7 +36,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state no multiple cat`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some fact", 0, false)),
+            savedFactResult = BaseResponse.Success(FactUiData("some fact", 0, false)),
         )
 
         composeTestRule.setContent {
@@ -53,7 +53,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state has multiple cats`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some cats", 0, false)),
+            savedFactResult = BaseResponse.Success(FactUiData("some cats", 0, false)),
         )
 
         composeTestRule.setContent {
@@ -70,7 +70,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state has length more than 100`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some cats", 102, false)),
+            savedFactResult = BaseResponse.Success(FactUiData("some cats", 102, false)),
         )
 
         composeTestRule.setContent {
@@ -89,7 +89,7 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state has length below 100`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some cats", 5, false)),
+            savedFactResult = BaseResponse.Success(FactUiData("some cats", 5, false)),
         )
 
         composeTestRule.setContent {
@@ -107,8 +107,8 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test success state from remote and replace local value`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some fact", 0, false)),
-            expectedUpdateFactResponse = BaseResponse.Success(
+            savedFactResult = BaseResponse.Success(FactUiData("some fact", 0, false)),
+            updateFactResult = BaseResponse.Success(
                 FactUiData(
                     "some another fact",
                     102,
@@ -132,8 +132,8 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test failed state and still show the fact`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Success(FactUiData("some fact", 0, false)),
-            expectedUpdateFactResponse = BaseResponse.Failed(code = 404, message = "Not found"),
+            savedFactResult = BaseResponse.Success(FactUiData("some fact", 0, false)),
+            updateFactResult = BaseResponse.Failed(code = 404, message = "Not found"),
         )
 
         composeTestRule.setContent {
@@ -151,8 +151,8 @@ class FactScreenTest : ComposableTestExtension() {
     @Test
     fun `test failed state and not show like and share button`() = runTest {
         val viewModel = getViewModel(
-            expectedSavedFactResponse = BaseResponse.Failed(code = 404, message = "Not found"),
-            expectedUpdateFactResponse = BaseResponse.Failed(code = 404, message = "Not found"),
+            savedFactResult = BaseResponse.Failed(code = 404, message = "Not found"),
+            updateFactResult = BaseResponse.Failed(code = 404, message = "Not found"),
         )
 
         composeTestRule.setContent {

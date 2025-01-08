@@ -15,8 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -64,7 +62,6 @@ fun FactScreen(
         }
     }
 
-
     when (configuration.orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> {
             LandscapeView(
@@ -76,7 +73,7 @@ fun FactScreen(
                     viewModel.updateFact()
                 },
                 saveFactToFavorite = {
-                    viewModel.saveFactToFavorite(it)
+                    viewModel.saveOrRemoveFactInFavorite(it)
                 },
                 navigateToFavoriteScreen = navigateToFavoriteScreen
             )
@@ -92,7 +89,7 @@ fun FactScreen(
                     viewModel.updateFact()
                 },
                 saveFactToFavorite = {
-                    viewModel.saveFactToFavorite(it)
+                    viewModel.saveOrRemoveFactInFavorite(it)
                 },
                 navigateToFavoriteScreen = navigateToFavoriteScreen
             )
@@ -117,13 +114,9 @@ private fun LandscapeView(
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        CatImage(
-            modifier = Modifier.weight(1f)
-        )
+        CatImage(modifier = Modifier.weight(1f))
         Spacer(Modifier.width(40.dp))
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
+        Column(modifier = Modifier.weight(1f)) {
             FactView(
                 factUiState = factUiState,
                 hasMultipleCats = hasMultipleCats,
@@ -300,10 +293,9 @@ private fun FactError(factUiState: FactUiState) {
     val textButton = if (factUiState is FactUiState.Failed) {
         factUiState.message
     } else ""
-    Text(
+    TextBody(
         text = textButton,
         color = colorResource(RUi.color.light_red),
-        style = MaterialTheme.typography.bodyLarge
     )
     if (textButton.isNotEmpty()) {
         Spacer(Modifier.height(10.dp))
