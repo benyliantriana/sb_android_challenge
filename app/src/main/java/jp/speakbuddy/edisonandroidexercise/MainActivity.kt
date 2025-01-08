@@ -4,12 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import jp.speakbuddy.edisonandroidexercise.navigation.FactFavoriteRoute
+import jp.speakbuddy.edisonandroidexercise.navigation.FactRoute
 import jp.speakbuddy.feature_fact.ui.fact.FactScreen
+import jp.speakbuddy.feature_fact.ui.favorite.FavoriteScreen
 import jp.speakbuddy.lib_ui.theme.EdisonAndroidExerciseTheme
 
 /**
@@ -23,14 +26,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EdisonAndroidExerciseTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    FactScreen()
-                }
+            EdisonAndroidExercise()
+        }
+    }
+}
+
+@Composable
+private fun EdisonAndroidExercise() {
+    EdisonAndroidExerciseTheme {
+        val navController = rememberNavController()
+        NavHost(navController = navController, startDestination = FactRoute) {
+            composable(FactRoute) {
+                FactScreen(
+                    navigateToFavoriteScreen = {
+                        navController.navigate(FactFavoriteRoute)
+                    }
+                )
+            }
+            composable(FactFavoriteRoute) {
+                FavoriteScreen(
+                    navigateUp = navController::navigateUp
+                )
             }
         }
     }

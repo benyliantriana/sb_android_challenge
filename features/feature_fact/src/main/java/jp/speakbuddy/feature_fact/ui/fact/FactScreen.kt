@@ -43,6 +43,7 @@ import jp.speakbuddy.lib_ui.R as RUi
 @Composable
 fun FactScreen(
     viewModel: FactViewModel = hiltViewModel<FactViewModel>(),
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     val factUiState = viewModel.factUiState.collectAsStateWithLifecycle().value
     val currentFact = viewModel.currentFactResponse.collectAsStateWithLifecycle().value
@@ -62,7 +63,8 @@ fun FactScreen(
                 },
                 saveFactToFavorite = {
                     viewModel.saveFactToFavorite(it)
-                }
+                },
+                navigateToFavoriteScreen = navigateToFavoriteScreen
             )
         }
 
@@ -77,7 +79,8 @@ fun FactScreen(
                 },
                 saveFactToFavorite = {
                     viewModel.saveFactToFavorite(it)
-                }
+                },
+                navigateToFavoriteScreen = navigateToFavoriteScreen
             )
         }
     }
@@ -91,6 +94,7 @@ private fun LandscapeView(
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
     saveFactToFavorite: (FactUiData) -> Unit,
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -112,7 +116,8 @@ private fun LandscapeView(
                 currentFact = currentFact,
                 isUpdateButtonEnabled = isUpdateButtonEnabled,
                 updateFact = updateFact,
-                saveFactToFavorite = saveFactToFavorite
+                saveFactToFavorite = saveFactToFavorite,
+                navigateToFavoriteScreen = navigateToFavoriteScreen
             )
         }
     }
@@ -126,6 +131,7 @@ private fun PortraitView(
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
     saveFactToFavorite: (FactUiData) -> Unit,
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -143,6 +149,7 @@ private fun PortraitView(
             isUpdateButtonEnabled = isUpdateButtonEnabled,
             updateFact = updateFact,
             saveFactToFavorite = saveFactToFavorite,
+            navigateToFavoriteScreen = navigateToFavoriteScreen,
         )
     }
 }
@@ -155,6 +162,7 @@ private fun FactView(
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
     saveFactToFavorite: (FactUiData) -> Unit,
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     Spacer(Modifier.height(20.dp))
     Title()
@@ -168,8 +176,10 @@ private fun FactView(
     FactUpdateButton(isUpdateButtonEnabled) {
         updateFact()
     }
-    Spacer(Modifier.height(10.dp))
     FactError(factUiState)
+    FactFavoriteButton {
+        navigateToFavoriteScreen()
+    }
 }
 
 @Composable
@@ -281,6 +291,9 @@ private fun FactError(factUiState: FactUiState) {
         color = colorResource(RUi.color.light_red),
         style = MaterialTheme.typography.bodyLarge
     )
+    if (textButton.isNotEmpty()) {
+        Spacer(Modifier.height(10.dp))
+    }
 }
 
 @Composable
@@ -292,4 +305,13 @@ private fun CatImage(
         model = catImageUrl,
         contentDescription = null,
     )
+}
+
+@Composable
+private fun FactFavoriteButton(
+    navigateToFavoriteScreen: () -> Unit,
+) {
+    ButtonText(stringResource(R.string.fact_favorite_list)) {
+        navigateToFavoriteScreen()
+    }
 }

@@ -84,6 +84,15 @@ class FactLocalDataSourceImpl @Inject constructor(
         return@withContext favoriteList.find { it.fact == factData.fact } != null
     }
 
+    override suspend fun getSavedFavoriteFactList(): BaseResponse<List<FactUiData>> {
+        val favoriteList: List<FactUiData> = getLocalFavoriteFactList().map {
+            FactUiData(it.fact, it.length, isFavorite = true)
+        }
+        return if (favoriteList.isNotEmpty()) {
+            BaseResponse.Success(favoriteList)
+        } else BaseResponse.Failed(200, "Favorite list is empty")
+    }
+
     private suspend fun getLocalFavoriteFactList(): MutableList<FactPreference> =
         withContext(ioDispatcher) {
             return@withContext favoriteFactDataStore.data.first().factFavoriteListList.toMutableList()
@@ -91,19 +100,22 @@ class FactLocalDataSourceImpl @Inject constructor(
 
     private suspend fun addFavoriteFact(factData: FactUiData) {
         withContext(ioDispatcher) {
-            val favoriteFact = FactPreference.getDefaultInstance().copy {
-                this.fact = factData.fact
-                this.length = factData.length
-                this.isFavorite = true
-            }
+            val alreadyInFavorite = alreadyFavoriteFact(factData)
+            if (!alreadyInFavorite) {
+                val favoriteFact = FactPreference.getDefaultInstance().copy {
+                    this.fact = factData.fact
+                    this.length = factData.length
+                    this.isFavorite = true
+                }
 
-            val favoriteList = getLocalFavoriteFactList()
-            favoriteList.add(favoriteFact)
-            favoriteFactDataStore.updateData {
-                it.toBuilder()
-                    .clearFactFavoriteList()
-                    .addAllFactFavoriteList(favoriteList)
-                    .build()
+                val favoriteList = getLocalFavoriteFactList()
+                favoriteList.add(favoriteFact)
+                favoriteFactDataStore.updateData {
+                    it.toBuilder()
+                        .clearFactFavoriteList()
+                        .addAllFactFavoriteList(favoriteList)
+                        .build()
+                }
             }
         }
     }

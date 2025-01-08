@@ -7,4 +7,5 @@
     <string name="fact_like">Like</string>
     <string name="fact_liked">Liked</string>
     <string name="fact_share">Share</string>
+    <string name="fact_favorite_list">Favorite List</string>
 </resources>
