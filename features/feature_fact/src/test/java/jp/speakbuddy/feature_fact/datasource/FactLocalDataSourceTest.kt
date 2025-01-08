@@ -6,7 +6,7 @@ import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSourceImpl
 import jp.speakbuddy.feature_fact.fake.testFactDataStore
 import jp.speakbuddy.feature_fact.fake.testFactFavoriteListDataStore
 import jp.speakbuddy.feature_fact.fake.tmpFolder
-import jp.speakbuddy.lib_base.test.CoroutineTestExtension
+import jp.speakbuddy.feature_fact.helper.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test

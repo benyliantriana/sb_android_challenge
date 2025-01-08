@@ -1,6 +1,5 @@
 plugins {
     id("jp.speakbuddy.lib-convention")
-    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -12,6 +11,4 @@ android {
 }
 
 dependencies {
-    implementation(libs.robolectric)
-    implementation(libs.androidx.ui.test.junit)
 }

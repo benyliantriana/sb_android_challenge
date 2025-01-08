@@ -1,4 +1,4 @@
-package jp.speakbuddy.lib_base.test
+package jp.speakbuddy.feature_fact.helper
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

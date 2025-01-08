@@ -4,7 +4,7 @@ import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
-import jp.speakbuddy.lib_base.test.CoroutineTestExtension
+import jp.speakbuddy.feature_fact.helper.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test

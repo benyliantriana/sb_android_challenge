@@ -2,9 +2,9 @@ package jp.speakbuddy.feature_fact.viewmodel
 
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
+import jp.speakbuddy.feature_fact.helper.CoroutineTestExtension
 import jp.speakbuddy.feature_fact.ui.favorite.FavoriteUiState
 import jp.speakbuddy.feature_fact.ui.favorite.FavoriteViewModel
-import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.first
 import org.junit.Assert.assertEquals

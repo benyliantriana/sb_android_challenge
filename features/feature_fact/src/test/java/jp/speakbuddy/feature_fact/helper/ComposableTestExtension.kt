@@ -1,4 +1,4 @@
-package jp.speakbuddy.lib_base.test
+package jp.speakbuddy.feature_fact.helper
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4

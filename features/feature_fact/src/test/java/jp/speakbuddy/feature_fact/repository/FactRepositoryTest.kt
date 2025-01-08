@@ -4,7 +4,7 @@ import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.fake.FakeFactLocalDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
-import jp.speakbuddy.lib_base.test.CoroutineTestExtension
+import jp.speakbuddy.feature_fact.helper.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList

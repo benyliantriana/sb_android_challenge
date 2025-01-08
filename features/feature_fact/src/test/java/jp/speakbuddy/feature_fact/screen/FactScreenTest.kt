@@ -6,8 +6,8 @@ import androidx.compose.ui.test.performClick
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.fake.FakeFactRepository
 import jp.speakbuddy.feature_fact.fake.FakeFactViewModel
+import jp.speakbuddy.feature_fact.helper.ComposableTestExtension
 import jp.speakbuddy.feature_fact.ui.fact.FactScreen
-import jp.speakbuddy.lib_base.test.ComposableTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
