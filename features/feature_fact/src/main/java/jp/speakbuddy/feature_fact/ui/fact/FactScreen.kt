@@ -68,6 +68,7 @@ fun FactScreen(
 
     Scaffold(
         modifier = Modifier
+            .background(colorResource(RUi.color.saffron))
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
     ) { innerPadding ->

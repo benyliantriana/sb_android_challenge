@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -85,16 +84,20 @@ fun FavoriteScreen(
 
     Scaffold(
         modifier = Modifier
+            .background(colorResource(RUi.color.saffron))
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.statusBars),
+            .windowInsetsPadding(WindowInsets.systemBars),
         snackbarHost = { SnackbarHost(snackBarHostState) },
         content = { innerPadding ->
             Column(
                 modifier = Modifier
-                    .padding(top = innerPadding.calculateTopPadding())
                     .background(colorResource(RUi.color.saffron))
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(
+                        top = innerPadding.calculateTopPadding(),
+                        bottom = innerPadding.calculateBottomPadding()
+                    )
+                    .padding(horizontal = 16.dp)
             ) {
                 BackButton {
                     snackBarHostState.currentSnackbarData?.dismiss()
