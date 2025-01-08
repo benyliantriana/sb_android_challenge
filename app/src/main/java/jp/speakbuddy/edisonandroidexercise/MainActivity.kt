@@ -3,26 +3,55 @@ package jp.speakbuddy.edisonandroidexercise
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import jp.speakbuddy.edisonandroidexercise.ui.fact.FactScreen
-import jp.speakbuddy.edisonandroidexercise.ui.fact.FactViewModel
-import jp.speakbuddy.edisonandroidexercise.ui.theme.EdisonAndroidExerciseTheme
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import jp.speakbuddy.edisonandroidexercise.navigation.FactFavoriteRoute
+import jp.speakbuddy.edisonandroidexercise.navigation.FactRoute
+import jp.speakbuddy.feature_fact.ui.fact.FactScreen
+import jp.speakbuddy.feature_fact.ui.favorite.FavoriteScreen
+import jp.speakbuddy.lib_ui.theme.EdisonAndroidExerciseTheme
 
+/**
+ * Main Activity could be moved to feature and make the app more clean
+ * Make app gradle dependency-less and only need hilt and feature lib
+ * Using activity-alias to implement it
+ */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
-            EdisonAndroidExerciseTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    FactScreen(viewModel = FactViewModel())
-                }
+            EdisonAndroidExercise()
+        }
+    }
+}
+
+/**
+ * Navigation should in feature_main or lib_navigation
+ * Navigation is temporary in app module
+ */
+@Suppress("TopLevelPropertyNaming", "FunctionNaming")
+@Composable
+private fun EdisonAndroidExercise() {
+    EdisonAndroidExerciseTheme {
+        val navController = rememberNavController()
+        NavHost(navController = navController, startDestination = FactRoute) {
+            composable(FactRoute) {
+                FactScreen(
+                    navigateToFavoriteScreen = {
+                        navController.navigate(FactFavoriteRoute)
+                    }
+                )
+            }
+            composable(FactFavoriteRoute) {
+                FavoriteScreen(
+                    navigateUp = navController::navigateUp
+                )
             }
         }
     }
