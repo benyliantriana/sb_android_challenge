@@ -4,7 +4,7 @@ import jp.speakbuddy.feature_fact.data.response.FactResponse
 import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.feature_fact.fake.FakeFactLocalDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
-import jp.speakbuddy.lib_base.test.CoroutineTestExtension
+import jp.speakbuddy.feature_fact.helper.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
@@ -16,14 +16,14 @@ class FactRepositoryTest {
     val coroutineTest = CoroutineTestExtension(true)
 
     private fun getRepository(
-        localResult: BaseResponse<FactUiData> = BaseResponse.Loading,
-        alreadyFavoriteFactResult: Boolean = false,
-        favoriteFactList: BaseResponse<List<FactUiData>> = BaseResponse.Loading,
-        remoteResult: BaseResponse<FactUiData> = BaseResponse.Loading,
+        factLocalResult: BaseResponse<FactUiData> = BaseResponse.Loading,
+        isFavoriteFactResult: Boolean = false,
+        favoriteFactListResult: BaseResponse<List<FactUiData>> = BaseResponse.Loading,
+        factRemoteResult: BaseResponse<FactUiData> = BaseResponse.Loading,
     ): FactRepository {
         return FactRepositoryImpl(
-            FakeFactLocalDataSource(localResult, alreadyFavoriteFactResult, favoriteFactList),
-            FakeFactRemoteDataSource(remoteResult),
+            FakeFactLocalDataSource(factLocalResult, isFavoriteFactResult, favoriteFactListResult),
+            FakeFactRemoteDataSource(factRemoteResult),
         )
     }
 
@@ -32,7 +32,7 @@ class FactRepositoryTest {
         // given
         val expected = BaseResponse.Loading
         val repo = getRepository(
-            localResult = BaseResponse.Loading
+            factLocalResult = BaseResponse.Loading
         )
         // when
         var result: BaseResponse<FactUiData>? = null
@@ -47,10 +47,10 @@ class FactRepositoryTest {
     @Test
     fun `success state for getSavedFact`() = coroutineTest.runTest {
         // given
-        val factResponse = FactUiData("cat", 3, false)
-        val expected = BaseResponse.Success(factResponse)
+        val factUiData = FactUiData("cat", 3, false)
+        val expected = BaseResponse.Success(factUiData)
         val repo = getRepository(
-            localResult = BaseResponse.Success(factResponse)
+            factLocalResult = BaseResponse.Success(factUiData)
         )
         // when
         val result = repo.getSavedFact().toList()
@@ -67,7 +67,7 @@ class FactRepositoryTest {
         val message = "Not found"
         val expected: BaseResponse<FactResponse> = BaseResponse.Failed(code, message)
         val repo = getRepository(
-            localResult = BaseResponse.Failed(code, message)
+            factLocalResult = BaseResponse.Failed(code, message)
         )
         // when
         val result = repo.getSavedFact().toList()
@@ -82,7 +82,7 @@ class FactRepositoryTest {
         // given
         val expected = BaseResponse.Loading
         val repo = getRepository(
-            remoteResult = BaseResponse.Loading
+            factRemoteResult = BaseResponse.Loading
         )
         // when
         var result: BaseResponse<FactUiData>? = null
@@ -97,10 +97,10 @@ class FactRepositoryTest {
     @Test
     fun `success state for updateFact`() = coroutineTest.runTest {
         // given
-        val factResponse = FactUiData("cat", 3, false)
-        val expected = BaseResponse.Success(factResponse)
+        val factUiData = FactUiData("cat", 3, false)
+        val expected = BaseResponse.Success(factUiData)
         val repo = getRepository(
-            remoteResult = BaseResponse.Success(factResponse)
+            factRemoteResult = BaseResponse.Success(factUiData)
         )
         // when
         val result = repo.updateFact().toList()
@@ -117,7 +117,7 @@ class FactRepositoryTest {
         val message = "Not found"
         val expected: BaseResponse<FactResponse> = BaseResponse.Failed(code, message)
         val repo = getRepository(
-            remoteResult = BaseResponse.Failed(code, message)
+            factRemoteResult = BaseResponse.Failed(code, message)
         )
         // when
         val result = repo.updateFact().toList()
@@ -129,10 +129,10 @@ class FactRepositoryTest {
 
     @Test
     fun `success get favorite list`() = coroutineTest.runTest {
-        val factResponse = FactUiData("cat", 3, true)
-        val expected = BaseResponse.Success(listOf(factResponse))
+        val factUiData = FactUiData("cat", 3, true)
+        val expected = BaseResponse.Success(listOf(factUiData))
         val repo = getRepository(
-            favoriteFactList = BaseResponse.Success(listOf(factResponse))
+            favoriteFactListResult = BaseResponse.Success(listOf(factUiData))
         )
 
         // when

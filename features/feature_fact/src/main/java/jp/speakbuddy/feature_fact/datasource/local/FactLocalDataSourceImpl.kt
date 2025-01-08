@@ -64,7 +64,8 @@ class FactLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveFactToFavoriteDataStore(factData: FactUiData) {
+    // this is so simple and lazy, but I think it's better than over-engineering
+    override suspend fun saveOrRemoveFactInFavoriteDataStore(factData: FactUiData) {
         withContext(ioDispatcher) {
             try {
                 if (factData.isFavorite) {
@@ -79,7 +80,7 @@ class FactLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun alreadyFavoriteFact(factData: FactUiData) = withContext(ioDispatcher) {
+    override suspend fun isFavoriteFact(factData: FactUiData) = withContext(ioDispatcher) {
         val favoriteList = getLocalFavoriteFactList()
         return@withContext favoriteList.find { it.fact == factData.fact } != null
     }
@@ -100,8 +101,8 @@ class FactLocalDataSourceImpl @Inject constructor(
 
     private suspend fun addFavoriteFact(factData: FactUiData) {
         withContext(ioDispatcher) {
-            val alreadyInFavorite = alreadyFavoriteFact(factData)
-            if (!alreadyInFavorite) {
+            val isFavoriteFact = isFavoriteFact(factData)
+            if (!isFavoriteFact) {
                 val favoriteFact = FactPreference.getDefaultInstance().copy {
                     this.fact = factData.fact
                     this.length = factData.length

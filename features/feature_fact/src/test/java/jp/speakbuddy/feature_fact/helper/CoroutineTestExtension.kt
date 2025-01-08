@@ -1,4 +1,4 @@
-package jp.speakbuddy.lib_base.test
+package jp.speakbuddy.feature_fact.helper
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,6 +13,9 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 
+/**
+ * Unit test revert back using Junit4 because robolectric still doesn't support Junit5
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 open class CoroutineTestExtension(unconfined: Boolean = false) {
     private val scope: TestScope = TestScope()

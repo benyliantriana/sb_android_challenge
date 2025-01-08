@@ -16,7 +16,7 @@ import jp.speakbuddy.feature_fact.ui.favorite.FavoriteScreen
 import jp.speakbuddy.lib_ui.theme.EdisonAndroidExerciseTheme
 
 /**
- * Main Activity could be moved to feature lib and make the app more clean
+ * Main Activity could be moved to feature and make the app more clean
  * Make app gradle dependency-less and only need hilt and feature lib
  * Using activity-alias to implement it
  */
@@ -31,6 +31,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Navigation should in feature_main or lib_navigation
+ * Navigation is temporary in app module
+ */
 @Suppress("TopLevelPropertyNaming", "FunctionNaming")
 @Composable
 private fun EdisonAndroidExercise() {

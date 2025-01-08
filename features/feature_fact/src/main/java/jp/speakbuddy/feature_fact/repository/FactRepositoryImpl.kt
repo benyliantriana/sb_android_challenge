@@ -23,13 +23,10 @@ class FactRepositoryImpl @Inject constructor(
         emit(BaseResponse.Loading)
         val remoteFact = getRemoteFact()
         if (remoteFact is BaseResponse.Success) {
-            val alreadyInFavorite = factLocalDataSource.alreadyFavoriteFact(remoteFact.data)
-            storeFact(
-                remoteFact.data.copy(isFavorite = alreadyInFavorite)
-            )
-            emit(
-                BaseResponse.Success(remoteFact.data.copy(isFavorite = alreadyInFavorite))
-            )
+            val isFavoriteFact = factLocalDataSource.isFavoriteFact(remoteFact.data)
+            val factData = remoteFact.data.copy(isFavorite = isFavoriteFact)
+            storeFact(factData)
+            emit(BaseResponse.Success(factData))
         } else {
             emit(remoteFact)
         }
@@ -38,8 +35,8 @@ class FactRepositoryImpl @Inject constructor(
         emit(BaseResponse.Failed(exceptionData.code, exceptionData.message))
     }
 
-    override suspend fun saveFactToFavoriteDataStore(fact: FactUiData) {
-        factLocalDataSource.saveFactToFavoriteDataStore(fact)
+    override suspend fun saveOrRemoveFactInFavoriteDataStore(fact: FactUiData) {
+        factLocalDataSource.saveOrRemoveFactInFavoriteDataStore(fact)
     }
 
     override suspend fun getSavedFavoriteFactList(): Flow<BaseResponse<List<FactUiData>>> = flow {

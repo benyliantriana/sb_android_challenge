@@ -6,17 +6,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -64,44 +68,53 @@ fun FactScreen(
         }
     }
 
+    Scaffold(
+        modifier = Modifier
+            .background(colorResource(RUi.color.saffron))
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars)
+    ) { innerPadding ->
+        when (configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                LandscapeView(
+                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
+                    factUiState = factUiState,
+                    hasMultipleCats = hasMultipleCats,
+                    currentFact = currentFact,
+                    isUpdateButtonEnabled = isUpdateButtonEnabled,
+                    updateFact = {
+                        viewModel.updateFact()
+                    },
+                    saveFactToFavorite = {
+                        viewModel.saveOrRemoveFactInFavorite(it)
+                    },
+                    navigateToFavoriteScreen = navigateToFavoriteScreen
+                )
+            }
 
-    when (configuration.orientation) {
-        Configuration.ORIENTATION_LANDSCAPE -> {
-            LandscapeView(
-                factUiState = factUiState,
-                hasMultipleCats = hasMultipleCats,
-                currentFact = currentFact,
-                isUpdateButtonEnabled = isUpdateButtonEnabled,
-                updateFact = {
-                    viewModel.updateFact()
-                },
-                saveFactToFavorite = {
-                    viewModel.saveFactToFavorite(it)
-                },
-                navigateToFavoriteScreen = navigateToFavoriteScreen
-            )
-        }
-
-        else -> {
-            PortraitView(
-                factUiState = factUiState,
-                hasMultipleCats = hasMultipleCats,
-                currentFact = currentFact,
-                isUpdateButtonEnabled = isUpdateButtonEnabled,
-                updateFact = {
-                    viewModel.updateFact()
-                },
-                saveFactToFavorite = {
-                    viewModel.saveFactToFavorite(it)
-                },
-                navigateToFavoriteScreen = navigateToFavoriteScreen
-            )
+            else -> {
+                PortraitView(
+                    modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
+                    factUiState = factUiState,
+                    hasMultipleCats = hasMultipleCats,
+                    currentFact = currentFact,
+                    isUpdateButtonEnabled = isUpdateButtonEnabled,
+                    updateFact = {
+                        viewModel.updateFact()
+                    },
+                    saveFactToFavorite = {
+                        viewModel.saveOrRemoveFactInFavorite(it)
+                    },
+                    navigateToFavoriteScreen = navigateToFavoriteScreen
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun LandscapeView(
+    modifier: Modifier = Modifier,
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
     currentFact: FactUiData,
@@ -111,18 +124,18 @@ private fun LandscapeView(
     navigateToFavoriteScreen: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(RUi.color.saffron))
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        CatImage(
-            modifier = Modifier.weight(1f)
-        )
+        CatImage(modifier = Modifier.weight(1f))
         Spacer(Modifier.width(40.dp))
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(1f)
         ) {
             FactView(
                 factUiState = factUiState,
@@ -139,6 +152,7 @@ private fun LandscapeView(
 
 @Composable
 private fun PortraitView(
+    modifier: Modifier = Modifier,
     factUiState: FactUiState,
     hasMultipleCats: Boolean,
     currentFact: FactUiData,
@@ -148,7 +162,7 @@ private fun PortraitView(
     navigateToFavoriteScreen: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(RUi.color.saffron))
             .padding(16.dp),
@@ -300,10 +314,9 @@ private fun FactError(factUiState: FactUiState) {
     val textButton = if (factUiState is FactUiState.Failed) {
         factUiState.message
     } else ""
-    Text(
+    TextBody(
         text = textButton,
         color = colorResource(RUi.color.light_red),
-        style = MaterialTheme.typography.bodyLarge
     )
     if (textButton.isNotEmpty()) {
         Spacer(Modifier.height(10.dp))

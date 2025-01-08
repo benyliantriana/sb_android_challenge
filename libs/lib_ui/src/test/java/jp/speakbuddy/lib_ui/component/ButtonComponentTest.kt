@@ -2,13 +2,12 @@ package jp.speakbuddy.lib_ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performClick
-import jp.speakbuddy.lib_base.test.ComposableTestExtension
 import jp.speakbuddy.lib_ui.components.ButtonText
 import jp.speakbuddy.lib_ui.components.IconButtonWithLabel
+import jp.speakbuddy.lib_ui.helper.ComposableTestExtension
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test

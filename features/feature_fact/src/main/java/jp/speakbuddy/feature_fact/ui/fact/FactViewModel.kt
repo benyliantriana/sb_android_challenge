@@ -76,23 +76,12 @@ open class FactViewModel @Inject constructor(
         }
     }
 
-    fun saveFactToFavorite(factUiData: FactUiData) {
+    fun saveOrRemoveFactInFavorite(factUiData: FactUiData) {
         viewModelScope.launch(ioDispatcher) {
-            factRepository.saveFactToFavoriteDataStore(
-                FactUiData(
-                    factUiData.fact,
-                    factUiData.length,
-                    !factUiData.isFavorite
-                )
+            factRepository.saveOrRemoveFactInFavoriteDataStore(
+                factUiData.copy(isFavorite = !factUiData.isFavorite)
             )
-            _factUiState.value = FactUiState.Success(
-                factUiData.copy(
-                    isFavorite = !factUiData.isFavorite
-                )
-            )
-            _currentFactResponse.value = currentFactResponse.value.copy(
-                isFavorite = !factUiData.isFavorite
-            )
+            getSavedFact()
         }
     }
 

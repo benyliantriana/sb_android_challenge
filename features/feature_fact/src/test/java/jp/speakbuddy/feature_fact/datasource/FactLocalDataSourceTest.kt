@@ -6,7 +6,7 @@ import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSourceImpl
 import jp.speakbuddy.feature_fact.fake.testFactDataStore
 import jp.speakbuddy.feature_fact.fake.testFactFavoriteListDataStore
 import jp.speakbuddy.feature_fact.fake.tmpFolder
-import jp.speakbuddy.lib_base.test.CoroutineTestExtension
+import jp.speakbuddy.feature_fact.helper.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -27,12 +27,12 @@ class FactLocalDataSourceTest {
     @Test
     fun `success state for getSavedFact`() = coroutineTest.runTest {
         // given
-        val factResponse = FactUiData("cat", 3, false)
-        val expected = BaseResponse.Success(factResponse)
+        val factData = FactUiData("cat", 3, false)
+        val expected = BaseResponse.Success(factData)
         val dataSource = getFactLocalDataSource()
 
         // when
-        dataSource.saveFactToDataStore(factResponse)
+        dataSource.saveFactToDataStore(factData)
         val result = dataSource.getLocalFact()
 
         // then
@@ -56,13 +56,13 @@ class FactLocalDataSourceTest {
 
     @Test
     fun `success save favorite`() = coroutineTest.runTest {
-        val factResponse = FactUiData("cat", 3, true)
+        val factData = FactUiData("cat", 3, true)
         val expected = true
         val dataSource = getFactLocalDataSource()
 
         // when
-        dataSource.saveFactToFavoriteDataStore(factResponse)
-        val result = dataSource.alreadyFavoriteFact(factResponse)
+        dataSource.saveOrRemoveFactInFavoriteDataStore(factData)
+        val result = dataSource.isFavoriteFact(factData)
 
         // then
         assertEquals(expected, result)
@@ -70,16 +70,16 @@ class FactLocalDataSourceTest {
 
     @Test
     fun `success remove favorite`() = coroutineTest.runTest {
-        val factResponse = FactUiData("cat", 3, true)
+        val factData = FactUiData("cat", 3, true)
         val expected = false
         val dataSource = getFactLocalDataSource()
 
         // when
-        dataSource.saveFactToFavoriteDataStore(factResponse)
-        dataSource.saveFactToFavoriteDataStore(factResponse.copy(
+        dataSource.saveOrRemoveFactInFavoriteDataStore(factData)
+        dataSource.saveOrRemoveFactInFavoriteDataStore(factData.copy(
             isFavorite = false
         ))
-        val result = dataSource.alreadyFavoriteFact(factResponse)
+        val result = dataSource.isFavoriteFact(factData)
 
         // then
         assertEquals(expected, result)
@@ -87,14 +87,14 @@ class FactLocalDataSourceTest {
 
     @Test
     fun `success get list favorite`() = coroutineTest.runTest {
-        val factResponse1 = FactUiData("cat", 3, true)
-        val factResponse2 = FactUiData("cats", 4, true)
-        val expected = BaseResponse.Success(listOf(factResponse1, factResponse2))
+        val factData1 = FactUiData("cat", 3, true)
+        val factData2 = FactUiData("cats", 4, true)
+        val expected = BaseResponse.Success(listOf(factData1, factData2))
         val dataSource = getFactLocalDataSource()
 
         // when
-        dataSource.saveFactToFavoriteDataStore(factResponse1)
-        dataSource.saveFactToFavoriteDataStore(factResponse2)
+        dataSource.saveOrRemoveFactInFavoriteDataStore(factData1)
+        dataSource.saveOrRemoveFactInFavoriteDataStore(factData2)
 
         val result = dataSource.getSavedFavoriteFactList()
 

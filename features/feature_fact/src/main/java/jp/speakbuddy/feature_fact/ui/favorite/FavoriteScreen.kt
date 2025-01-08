@@ -1,17 +1,19 @@
 package jp.speakbuddy.feature_fact.ui.favorite
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -44,7 +46,6 @@ import jp.speakbuddy.lib_ui.components.TextTitle
 import kotlinx.coroutines.launch
 import jp.speakbuddy.lib_ui.R as RUi
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel<FavoriteViewModel>(),
@@ -54,11 +55,14 @@ fun FavoriteScreen(
     val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    val snackBarText = stringResource(R.string.fact_remove_favorite)
+    val undoTextAction = stringResource(R.string.fact_undo)
+
     fun showRemoveFactSnackBar() {
         scope.launch {
             val result = snackBarHostState.showSnackbar(
-                message = "Fact removed from favorite",
-                actionLabel = "Undo",
+                message = snackBarText,
+                actionLabel = undoTextAction,
                 duration = SnackbarDuration.Short
             )
             when (result) {
@@ -79,15 +83,22 @@ fun FavoriteScreen(
     }
 
     Scaffold(
+        modifier = Modifier
+            .background(colorResource(RUi.color.saffron))
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
         snackbarHost = { SnackbarHost(snackBarHostState) },
-        content = { _ ->
+        content = { innerPadding ->
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
                     .background(colorResource(RUi.color.saffron))
-                    .padding(16.dp)
+                    .fillMaxSize()
+                    .padding(
+                        top = innerPadding.calculateTopPadding(),
+                        bottom = innerPadding.calculateBottomPadding()
+                    )
+                    .padding(horizontal = 16.dp)
             ) {
-                Spacer(Modifier.height(10.dp))
                 BackButton {
                     snackBarHostState.currentSnackbarData?.dismiss()
                     navigateUp()
@@ -143,7 +154,9 @@ private fun FavoriteList(
             }
         }
 
-        else -> {}
+        else -> {
+            // todo implement loading state and failed (empty) state
+        }
     }
 }
 
@@ -156,7 +169,7 @@ private fun FavoriteFact(
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
+            defaultElevation = 4.dp
         )
     ) {
         TextBody(
@@ -164,7 +177,7 @@ private fun FavoriteFact(
             modifier = Modifier.padding(8.dp)
         )
         TextBody(
-            text = "remove",
+            text = stringResource(R.string.fact_remove),
             color = colorResource(RUi.color.light_red),
             textAlign = TextAlign.Right,
             modifier = Modifier

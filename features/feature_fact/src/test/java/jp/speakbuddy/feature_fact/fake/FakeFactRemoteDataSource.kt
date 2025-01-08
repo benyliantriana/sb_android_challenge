@@ -5,7 +5,7 @@ import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
 import jp.speakbuddy.lib_network.response.BaseResponse
 
 class FakeFactRemoteDataSource(
-    private val remoteResult: BaseResponse<FactUiData> = BaseResponse.Loading,
+    private val factRemoteResult: BaseResponse<FactUiData> = BaseResponse.Loading,
 ) : FactRemoteDataSource {
-    override suspend fun getRemoteFact(): BaseResponse<FactUiData> = remoteResult
+    override suspend fun getRemoteFact(): BaseResponse<FactUiData> = factRemoteResult
 }

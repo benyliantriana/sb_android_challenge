@@ -22,7 +22,11 @@ open class FavoriteViewModel @Inject constructor(
         FavoriteUiState.Loading
     )
     val favoriteUiState: StateFlow<FavoriteUiState> get() = _favoriteUiState
-    private var currentFavorite: List<FactUiData> = emptyList()
+
+    // for temporary favorite list
+    private var currentFavoriteList: List<FactUiData> = emptyList()
+
+    // index favorite data on list to be removed
     private var indexFavoriteData: Int? = null
 
     init {
@@ -48,29 +52,29 @@ open class FavoriteViewModel @Inject constructor(
 
     fun removeTempFavoriteFact(index: Int) {
         viewModelScope.launch(ioDispatcher) {
-            val currentFavoriteList = (_favoriteUiState.value as FavoriteUiState.Success)
+            val tempFavoriteList = (_favoriteUiState.value as FavoriteUiState.Success)
                 .favoriteList.toMutableList()
 
-            currentFavorite = currentFavoriteList.toList()
+            currentFavoriteList = tempFavoriteList.toList()
 
             indexFavoriteData = index
 
-            currentFavoriteList.removeAt(index)
-            _favoriteUiState.value = FavoriteUiState.Success(currentFavoriteList)
+            tempFavoriteList.removeAt(index)
+            _favoriteUiState.value = FavoriteUiState.Success(tempFavoriteList)
         }
     }
 
     fun undoRemoveFavoriteFact() {
         viewModelScope.launch(ioDispatcher) {
-            _favoriteUiState.value = FavoriteUiState.Success(currentFavorite)
+            _favoriteUiState.value = FavoriteUiState.Success(currentFavoriteList)
         }
     }
 
     fun doRemoveFavoriteFact() {
         viewModelScope.launch(ioDispatcher) {
             indexFavoriteData?.let {
-                factRepository.saveFactToFavoriteDataStore(
-                    currentFavorite[it].copy(isFavorite = false)
+                factRepository.saveOrRemoveFactInFavoriteDataStore(
+                    currentFavoriteList[it].copy(isFavorite = false)
                 )
             }
         }
