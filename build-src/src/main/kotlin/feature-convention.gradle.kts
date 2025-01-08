@@ -62,6 +62,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.lifecycle.compose)
     implementation(libs.coil)
     implementation(libs.coil.network)
     implementation(libs.compose.ui)
