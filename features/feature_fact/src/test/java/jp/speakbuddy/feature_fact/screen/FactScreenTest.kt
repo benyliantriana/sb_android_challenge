@@ -26,7 +26,7 @@ class FactScreenTest : ComposableTestExtension() {
         val viewModel = getViewModel(expectedSavedFactResponse = BaseResponse.Loading)
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
 
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
@@ -40,7 +40,7 @@ class FactScreenTest : ComposableTestExtension() {
         )
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some fact")).assertIsDisplayed()
@@ -57,7 +57,7 @@ class FactScreenTest : ComposableTestExtension() {
         )
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some cats")).assertIsDisplayed()
@@ -74,7 +74,7 @@ class FactScreenTest : ComposableTestExtension() {
         )
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
         println(viewModel.factUiState.value)
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
@@ -93,7 +93,7 @@ class FactScreenTest : ComposableTestExtension() {
         )
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some cats")).assertIsDisplayed()
@@ -118,7 +118,7 @@ class FactScreenTest : ComposableTestExtension() {
         )
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed().performClick()
@@ -137,7 +137,7 @@ class FactScreenTest : ComposableTestExtension() {
         )
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("some fact")).assertIsDisplayed()
@@ -156,7 +156,7 @@ class FactScreenTest : ComposableTestExtension() {
         )
 
         composeTestRule.setContent {
-            FactScreen(viewModel)
+            FactScreen(viewModel) {}
         }
         composeTestRule.onNode(hasText("Cat Fact")).assertIsDisplayed()
         composeTestRule.onNode(hasText("Update Fact")).assertIsDisplayed().performClick()

@@ -32,7 +32,7 @@ open class FactViewModel @Inject constructor(
         getSavedFact()
     }
 
-    private fun getSavedFact() {
+    fun getSavedFact() {
         viewModelScope.launch(ioDispatcher) {
             factRepository.getSavedFact().collect { result ->
                 when (result) {

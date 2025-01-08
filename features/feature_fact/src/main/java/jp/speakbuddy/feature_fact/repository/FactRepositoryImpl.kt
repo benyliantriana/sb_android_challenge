@@ -42,6 +42,10 @@ class FactRepositoryImpl @Inject constructor(
         factLocalDataSource.saveFactToFavoriteDataStore(fact)
     }
 
+    override suspend fun getSavedFavoriteFactList(): Flow<BaseResponse<List<FactUiData>>> = flow {
+        emit(factLocalDataSource.getSavedFavoriteFactList())
+    }
+
     private suspend fun getRemoteFact(): BaseResponse<FactUiData> {
         return factRemoteDataSource.getRemoteFact()
     }

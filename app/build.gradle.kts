@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
     implementation(libs.material3)
+    implementation(libs.compose.navigation)
 
     implementation(project(":libs:lib_base"))
     implementation(project(":libs:lib_ui"))

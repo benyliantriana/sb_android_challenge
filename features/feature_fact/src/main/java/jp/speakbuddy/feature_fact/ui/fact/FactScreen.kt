@@ -18,6 +18,8 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -27,6 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import jp.speakbuddy.feature_fact.R
@@ -43,12 +47,23 @@ import jp.speakbuddy.lib_ui.R as RUi
 @Composable
 fun FactScreen(
     viewModel: FactViewModel = hiltViewModel<FactViewModel>(),
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     val factUiState = viewModel.factUiState.collectAsStateWithLifecycle().value
     val currentFact = viewModel.currentFactResponse.collectAsStateWithLifecycle().value
     val hasMultipleCats = viewModel.hasMultipleCats.collectAsStateWithLifecycle().value
     val isUpdateButtonEnabled = factUiState !is FactUiState.Loading
     val configuration = LocalConfiguration.current
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState = lifecycleOwner.lifecycle.currentStateFlow.collectAsState().value
+
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+            viewModel.getSavedFact()
+        }
+    }
+
 
     when (configuration.orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> {
@@ -62,7 +77,8 @@ fun FactScreen(
                 },
                 saveFactToFavorite = {
                     viewModel.saveFactToFavorite(it)
-                }
+                },
+                navigateToFavoriteScreen = navigateToFavoriteScreen
             )
         }
 
@@ -77,7 +93,8 @@ fun FactScreen(
                 },
                 saveFactToFavorite = {
                     viewModel.saveFactToFavorite(it)
-                }
+                },
+                navigateToFavoriteScreen = navigateToFavoriteScreen
             )
         }
     }
@@ -91,6 +108,7 @@ private fun LandscapeView(
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
     saveFactToFavorite: (FactUiData) -> Unit,
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -112,7 +130,8 @@ private fun LandscapeView(
                 currentFact = currentFact,
                 isUpdateButtonEnabled = isUpdateButtonEnabled,
                 updateFact = updateFact,
-                saveFactToFavorite = saveFactToFavorite
+                saveFactToFavorite = saveFactToFavorite,
+                navigateToFavoriteScreen = navigateToFavoriteScreen
             )
         }
     }
@@ -126,6 +145,7 @@ private fun PortraitView(
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
     saveFactToFavorite: (FactUiData) -> Unit,
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -143,6 +163,7 @@ private fun PortraitView(
             isUpdateButtonEnabled = isUpdateButtonEnabled,
             updateFact = updateFact,
             saveFactToFavorite = saveFactToFavorite,
+            navigateToFavoriteScreen = navigateToFavoriteScreen,
         )
     }
 }
@@ -155,6 +176,7 @@ private fun FactView(
     isUpdateButtonEnabled: Boolean,
     updateFact: () -> Unit,
     saveFactToFavorite: (FactUiData) -> Unit,
+    navigateToFavoriteScreen: () -> Unit,
 ) {
     Spacer(Modifier.height(20.dp))
     Title()
@@ -168,8 +190,10 @@ private fun FactView(
     FactUpdateButton(isUpdateButtonEnabled) {
         updateFact()
     }
-    Spacer(Modifier.height(10.dp))
     FactError(factUiState)
+    FactFavoriteButton {
+        navigateToFavoriteScreen()
+    }
 }
 
 @Composable
@@ -281,6 +305,9 @@ private fun FactError(factUiState: FactUiState) {
         color = colorResource(RUi.color.light_red),
         style = MaterialTheme.typography.bodyLarge
     )
+    if (textButton.isNotEmpty()) {
+        Spacer(Modifier.height(10.dp))
+    }
 }
 
 @Composable
@@ -292,4 +319,13 @@ private fun CatImage(
         model = catImageUrl,
         contentDescription = null,
     )
+}
+
+@Composable
+private fun FactFavoriteButton(
+    navigateToFavoriteScreen: () -> Unit,
+) {
+    ButtonText(stringResource(R.string.fact_favorite_list)) {
+        navigateToFavoriteScreen()
+    }
 }
