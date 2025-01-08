@@ -6,6 +6,7 @@ import jp.speakbuddy.feature_fact.fake.FakeFactLocalDataSource
 import jp.speakbuddy.feature_fact.fake.FakeFactRemoteDataSource
 import jp.speakbuddy.lib_base.test.CoroutineTestExtension
 import jp.speakbuddy.lib_network.response.BaseResponse
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,10 +17,12 @@ class FactRepositoryTest {
 
     private fun getRepository(
         localResult: BaseResponse<FactUiData> = BaseResponse.Loading,
+        alreadyFavoriteFactResult: Boolean = false,
+        favoriteFactList: BaseResponse<List<FactUiData>> = BaseResponse.Loading,
         remoteResult: BaseResponse<FactUiData> = BaseResponse.Loading,
     ): FactRepository {
         return FactRepositoryImpl(
-            FakeFactLocalDataSource(localResult),
+            FakeFactLocalDataSource(localResult, alreadyFavoriteFactResult, favoriteFactList),
             FakeFactRemoteDataSource(remoteResult),
         )
     }
@@ -122,5 +125,20 @@ class FactRepositoryTest {
         // then
         assertEquals(BaseResponse.Loading, result[0])
         assertEquals(expected, result[1])
+    }
+
+    @Test
+    fun `success get favorite list`() = coroutineTest.runTest {
+        val factResponse = FactUiData("cat", 3, true)
+        val expected = BaseResponse.Success(listOf(factResponse))
+        val repo = getRepository(
+            favoriteFactList = BaseResponse.Success(listOf(factResponse))
+        )
+
+        // when
+        val result = repo.getSavedFavoriteFactList().first()
+
+        // then
+        assertEquals(expected, result)
     }
 }

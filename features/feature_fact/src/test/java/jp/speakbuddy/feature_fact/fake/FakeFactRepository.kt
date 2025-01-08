@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOf
 class FakeFactRepository(
     private val savedFactResponseResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
     private val updateFactResponseResponse: BaseResponse<FactUiData> = BaseResponse.Loading,
-    private val savedFavoriteList: BaseResponse<List<FactUiData>> = BaseResponse.Success(emptyList()),
+    private val savedFavoriteList: BaseResponse<List<FactUiData>> = BaseResponse.Loading,
 ) : FactRepository {
     override suspend fun getSavedFact(): Flow<BaseResponse<FactUiData>> =
         flowOf(savedFactResponseResponse)
