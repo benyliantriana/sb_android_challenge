@@ -72,6 +72,8 @@ feature/
 ## Screenshots
 ![Cat Facts App](docs/banner-landscape.png "Cat Facts App")
 ![Cat Facts App](docs/banner-portrait.png "Cat Facts App")
+![Cat Facts App](docs/banner-favorite-landscape.png "Cat Facts App")
+![Cat Facts App](docs/banner-favorite-portrait.png "Cat Facts App")
 
 ## Contact
 For inquiries or feedback, feel free to reach out:
