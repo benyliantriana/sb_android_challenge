@@ -15,3 +15,13 @@ dependencyResolutionManagement {
 rootProject.name = "edison_android_exercise"
 
 include(":app")
+include(":libs:lib_base")
+include(":libs:lib_datastore")
+include(":libs:lib_network")
+include(":libs:lib_ui")
+include(":features:feature_fact")
+include(":features:feature_main")
+includeBuild("build-src")
+
+// this line is required, somehow the convention has some blocking process, even no test classes there
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-src:testClasses"))
