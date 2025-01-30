@@ -61,12 +61,8 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
-    implementation(libs.material3)
-    implementation(libs.compose.navigation)
 
-    implementation(project(":libs:lib_base"))
-    implementation(project(":libs:lib_ui"))
-    implementation(project(":features:feature_fact"))
+    implementation(project(":features:feature_main"))
 }
 
 kapt {
