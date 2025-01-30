@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import jp.speakbuddy.feature_fact.api.FactApi
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSource
 import jp.speakbuddy.feature_fact.datasource.local.FactLocalDataSourceImpl
 import jp.speakbuddy.feature_fact.datasource.remote.FactRemoteDataSource
@@ -48,11 +49,17 @@ class ModuleInjection {
     @Provides
     @Singleton
     fun provideFactRemoteDataSource(
-        apiService: ApiService,
+        factApi: FactApi,
         @IODispatcher ioDispatcher: CoroutineDispatcher,
     ): FactRemoteDataSource =
         FactRemoteDataSourceImpl(
-            apiService,
+            factApi,
             ioDispatcher
         )
+
+    @Provides
+    @Singleton
+    fun provideFactApi(
+        apiService: ApiService,
+    ): FactApi = apiService.service().create(FactApi::class.java)
 }
