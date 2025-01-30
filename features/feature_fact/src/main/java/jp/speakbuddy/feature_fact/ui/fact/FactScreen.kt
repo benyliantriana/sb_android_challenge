@@ -163,8 +163,8 @@ private fun PortraitView(
 ) {
     Column(
         modifier = modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .background(colorResource(RUi.color.saffron))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
