@@ -5,14 +5,13 @@ import jp.speakbuddy.feature_fact.data.ui.FactUiData
 import jp.speakbuddy.lib_base.di.IODispatcher
 import jp.speakbuddy.lib_base.exception.getDefaultRemoteException
 import jp.speakbuddy.lib_network.response.BaseResponse
-import jp.speakbuddy.lib_network.service.ApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
 class FactRemoteDataSourceImpl @Inject constructor(
-    private val apiService: ApiService,
+    private val factApi: FactApi,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : FactRemoteDataSource {
     override suspend fun getRemoteFact(): BaseResponse<FactUiData> = withContext(ioDispatcher) {
@@ -20,10 +19,7 @@ class FactRemoteDataSourceImpl @Inject constructor(
         var factResponseResult: BaseResponse<FactUiData> = BaseResponse.Failed(
             code = defaultExceptionData.code, message = defaultExceptionData.message
         )
-        val result = apiService.service()
-            .create(FactApi::class.java)
-            .getFact()
-            .awaitResponse()
+        val result = factApi.getFact().awaitResponse()
         if (result.isSuccessful) {
             result.body()?.let {
                 factResponseResult = BaseResponse.Success(

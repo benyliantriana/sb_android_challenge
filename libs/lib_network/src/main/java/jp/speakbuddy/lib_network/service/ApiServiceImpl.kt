@@ -14,7 +14,7 @@ class ApiServiceImpl(
         private const val BASE_URL = "https://catfact.ninja/"
     }
 
-    override suspend fun service(): Retrofit {
+    override fun service(): Retrofit {
         val requestInterceptor = Interceptor { chain ->
             val url = chain.request()
                 .url()
